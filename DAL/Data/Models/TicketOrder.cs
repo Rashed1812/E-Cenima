@@ -19,6 +19,7 @@ namespace DAL.Data.Models
         public int Amount { get; set; }
 
         [DataType(DataType.Currency)]
+
         public decimal TotalPrice { get; set; }
 
         public string? PaymentStatus { get; set; }

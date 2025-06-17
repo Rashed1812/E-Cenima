@@ -14,7 +14,7 @@ namespace E_Cenima
 
             builder.Services.AddDbContext<AppDbContext>(options =>
             {
-                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaiultConnection"));
+                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
             });
 
             var app = builder.Build();

@@ -9,7 +9,17 @@ namespace DAL.Data.Configurations
         public void Configure(EntityTypeBuilder<Timing> builder)
         {
             builder.HasKey(t => t.Id);
-            builder.Property(t => t.Price).HasColumnType("decimal(18,2)");
+
+            builder.Property(t => t.StartTime)
+                   .IsRequired();
+
+            builder.Property(t => t.Price)
+                   .HasColumnType("decimal(18,2)");
+
+            builder.HasOne(t => t.Showtime)
+                   .WithMany(s => s.Timings)
+                   .HasForeignKey(t => t.ShowTime_Id)
+                   .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

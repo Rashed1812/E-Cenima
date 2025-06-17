@@ -14,9 +14,8 @@ namespace DAL.Data.Models
         [DataType(DataType.Time)]
         public TimeSpan StartTime { get; set; }
         public decimal Price { get; set; }
-        [ForeignKey("showtime_id")]
-        public int ShowTime_id { get; set; }
-        public ShowTime Showtime { get; set; } 
+        public int ShowTime_Id { get; set; }
+        public ShowTime Showtime { get; set; }
         public ICollection<Ticket> Tickets { get; set; }
     }
 }
