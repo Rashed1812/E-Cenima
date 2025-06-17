@@ -1,3 +1,6 @@
+using DAL.Data;
+using Microsoft.EntityFrameworkCore;
+
 namespace E_Cenima
 {
     public class Program
@@ -8,6 +11,11 @@ namespace E_Cenima
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+
+            builder.Services.AddDbContext<AppDbContext>(options =>
+            {
+                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaiultConnection"));
+            });
 
             var app = builder.Build();
 
