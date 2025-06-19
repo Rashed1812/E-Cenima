@@ -1,4 +1,5 @@
 using DAL.Data;
+using DAL.Data.Repositories.GenericRepositories;
 using Microsoft.EntityFrameworkCore;
 
 namespace E_Cenima
@@ -16,6 +17,7 @@ namespace E_Cenima
             {
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
             });
+
 
             var app = builder.Build();
 
