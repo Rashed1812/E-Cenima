@@ -1,0 +1,47 @@
+[
+    {
+        "Name": "Matab Sinay",
+        "Description": "An action-comedy movie set in an Egyptian town.",
+        "ImageURL": "https://media0078.elcinema.com/uploads/_315x420_aec1a0115f9f158ea12416fbe20dca3dac0dca52589f09527882802f966ed46a.jpg",
+        "ReleaseDate": "2016-06-01",
+        "TrailerURL": "https://www.youtube.com/watch?v=dummy1",
+        "MovieCategory": "Comedy",
+        "ProducerId": 1
+    },
+    {
+        "Name": "El-Limby",
+        "Description": "A famous Egyptian comedy starring Mohamed Saad.",
+        "ImageURL": "https://i.ytimg.com/vi/M9dM0ZW9AXc/maxresdefault.jpg",
+        "ReleaseDate": "2002-05-20",
+        "TrailerURL": "https://www.youtube.com/watch?v=dummy2",
+        "MovieCategory": "Comedy",
+        "ProducerId": 6
+    },
+    {
+        "Name": "Amir El-Bahar",
+        "Description": "Comedy movie about a police officer in the navy.",
+        "ImageURL": "https://upload.wikimedia.org/wikipedia/ar/d/d5/%D9%85%D9%84%D8%B5%D9%82_%D9%81%D9%84%D9%85_%D8%A3%D9%85%D9%8A%D8%B1_%D8%A7%D9%84%D8%A8%D8%AD%D8%A7%D8%B1_%282009%29.jpg",
+        "ReleaseDate": "2009-12-10",
+        "TrailerURL": "https://www.youtube.com/watch?v=dummy3",
+        "MovieCategory": "Comedy",
+        "ProducerId": 2
+    },
+    {
+        "Name": "The Matrix",
+        "Description": "A sci-fi thriller about a simulated reality.",
+        "ImageURL": "https://m.media-amazon.com/images/I/51EG732BV3L._AC_SY445_.jpg",
+        "ReleaseDate": "1999-03-31",
+        "TrailerURL": "https://www.youtube.com/watch?v=m8e-FF8MsqU",
+        "MovieCategory": "ScienceFiction",
+        "ProducerId": 21
+    },
+    {
+        "Name": "Coco",
+        "Description": "A boy journeys into the Land of the Dead.",
+        "ImageURL": "https://image.tmdb.org/t/p/original/fqZEc92MAFy5mR6aSMRDx1QN73N.jpg",
+        "ReleaseDate": "2017-10-20",
+        "TrailerURL": "https://www.youtube.com/watch?v=Ga6RYejo6Hk",
+        "MovieCategory": "Animation",
+        "ProducerId": 20
+    }
+]

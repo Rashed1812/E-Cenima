@@ -8,8 +8,6 @@
 
   <ItemGroup>
     <Folder Include="Models\" />
-    <Folder Include="Data\Repositories\Calsses\" />
-    <Folder Include="Data\Repositories\Intrfaces\" />
   </ItemGroup>
 
   <ItemGroup>
