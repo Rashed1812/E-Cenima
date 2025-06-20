@@ -1,0 +1,96 @@
+﻿<footer class="footer py-4 mt-5" id="mainFooter">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 mb-4 mb-md-0">
+                <h5 class="text-accent">E-Cinema</h5>
+                <p class="small">Your premier destination for the latest movies and cinema experiences.</p>
+            </div>
+
+            <div class="col-md-4 mb-4 mb-md-0">
+                <h5 class="text-accent">Quick Links</h5>
+                <ul class="list-unstyled">
+                    <li><a asp-controller="Home" asp-action="Index" class="footer-link">Home</a></li>
+                    <li><a asp-controller="Movies" asp-action="Index" class="footer-link">Movies</a></li>
+                    <li><a asp-controller="Home" asp-action="About" class="footer-link">About Us</a></li>
+                    <li><a asp-controller="Home" asp-action="Contact" class="footer-link">Contact</a></li>
+                </ul>
+            </div>
+
+            <div class="col-md-4">
+                <h5 class="text-accent">Connect With Us</h5>
+                <div class="social-icons">
+                    <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
+                </div>
+                <p class="small mt-2">Subscribe to our newsletter</p>
+                <div class="input-group mb-3">
+                    <input type="email" class="form-control" placeholder="Your email">
+                    <button class="btn btn-accent" type="button">Subscribe</button>
+                </div>
+            </div>
+        </div>
+
+        <hr class="my-4 divider">
+
+        <div class="text-center small">
+            <p class="mb-0">&copy; @DateTime.Now.Year - E-Cinema. All rights reserved.</p>
+            <p class="mb-0">
+                <a asp-controller="Home" asp-action="Privacy" class="footer-link">Privacy Policy</a> |
+                <a asp-controller="Home" asp-action="Terms" class="footer-link">Terms of Service</a>
+            </p>
+        </div>
+    </div>
+</footer>
+
+
+<style>
+    /* Footer Theme Styles */
+    .footer {
+        background-color: var(--secondary-color);
+        color: var(--accent-color);
+        border-top: 3px solid var(--primary-color);
+    }
+
+    [data-bs-theme="light"] .footer {
+        background-color: var(--secondary-color);
+        color: var(--accent-color);
+    }
+
+    .text-accent {
+        color: var(--primary-color);
+    }
+
+    .btn-accent {
+        background-color: var(--primary-color);
+        color: white;
+    }
+
+    .footer-link {
+        color: var(--accent-color);
+        text-decoration: none;
+        transition: color 0.3s;
+    }
+
+        .footer-link:hover {
+            color: var(--primary-color);
+        }
+
+    .social-icon {
+        color: var(--accent-color);
+        margin-right: 15px;
+        font-size: 1.2rem;
+        transition: color 0.3s;
+    }
+
+        .social-icon:hover {
+            color: var(--primary-color);
+        }
+
+    .divider {
+        background-color: var(--primary-color);
+        opacity: 0.2;
+    }
+
+</style>

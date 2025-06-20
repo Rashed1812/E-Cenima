@@ -1,10 +1,14 @@
 ﻿using System.Text.Json.Serialization;
 using DAL.Data;
+<<<<<<< HEAD
+using DAL.Data.Repositories.Calsses;
+=======
  Demo
 using DAL.Data.Repositories.Calsses;
 using DAL.Data.Repositories.Intrfaces;
 using Microsoft.AspNetCore.Identity;
 
+>>>>>>> master
 using DAL.Data.Repositories.GenericRepositories;
  master
 using Microsoft.EntityFrameworkCore;
@@ -29,6 +33,9 @@ namespace E_Cenima
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
             });
 
+<<<<<<< HEAD
+            builder.Services.AddScoped<IMovieRepo,MovieRepo>();
+=======
  Demo
             // Identity services
             builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
@@ -40,6 +47,7 @@ namespace E_Cenima
 
 master
 
+>>>>>>> master
             var app = builder.Build();
 
             // Seed initial data
