@@ -28,11 +28,7 @@ namespace DAL.Data.Models.Movie_Module
         public int ProducerId { get; set; }
         [ForeignKey("ProducerId")]
         public Producer Producer { get; set; }
-
-        // Many-to-many relationship with Actor
         public ICollection<MovieActor> MovieActors { get; set; } = new List<MovieActor>();
-
-        // Many-to-one relationship with Showtime
         public ICollection<ShowTime> Showtimes { get; set; }
         public ICollection<Review> Reviews { get; set; }
     }

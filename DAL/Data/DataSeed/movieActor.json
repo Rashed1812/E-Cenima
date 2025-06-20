@@ -1,0 +1,97 @@
+[
+    {
+        "MovieId": 9,
+        "ActorId": 101,
+        "RoleName": "Glal"
+    },
+    {
+        "MovieId": 9,
+        "ActorId": 107,
+        "RoleName": "Mai"
+    },
+    {
+        "MovieId": 10,
+        "ActorId": 106,
+        "RoleName": "EL-Lemby"
+    },
+    {
+        "MovieId": 11,
+        "ActorId": 102,
+        "RoleName": "Amir"
+    },
+    {
+        "MovieId": 11,
+        "ActorId": 103,
+        "RoleName": "Yahia El Masry"
+    },
+    {
+        "MovieId": 11,
+        "ActorId": 105,
+        "RoleName": "Saber"
+    },
+    {
+        "MovieId": 12,
+        "ActorId": 101,
+        "RoleName": "Tarek"
+    },
+    {
+        "MovieId": 12,
+        "ActorId": 107,
+        "RoleName": "Sara"
+    },
+    {
+        "MovieId": 12,
+        "ActorId": 108,
+        "RoleName": "Kevin"
+    },
+    {
+        "MovieId": 12,
+        "ActorId": 109,
+        "RoleName": "Mr.Han"
+    },
+    {
+        "MovieId": 12,
+        "ActorId": 110,
+        "RoleName": "Dre Parker"
+    },
+    {
+        "MovieId": 13,
+        "ActorId": 111,
+        "RoleName": "Harry Potter"
+    },
+    {
+        "MovieId": 13,
+        "ActorId": 112,
+        "RoleName": "Hermione Granger"
+    },
+    {
+        "MovieId": 13,
+        "ActorId": 113,
+        "RoleName": "Cruella"
+    },
+    {
+        "MovieId": 13,
+        "ActorId": 114,
+        "RoleName": "Leonardo DiCaprio"
+    },
+    {
+        "MovieId": 13,
+        "ActorId": 115,
+        "RoleName": "Matthew Broderick"
+    },
+    {
+        "MovieId": 13,
+        "ActorId": 116,
+        "RoleName": "Christian Bale"
+    },
+    {
+        "MovieId": 13,
+        "ActorId": 117,
+        "RoleName": "Matthew McConaughey"
+    },
+    {
+        "MovieId": 13,
+        "ActorId": 118,
+        "RoleName": "Idina Menzel"
+    }
+]

@@ -14,6 +14,7 @@ namespace DAL.Data.Models
         public int Ticket_Id { get; set; }
         public int RowNumber { get; set; }
         public int SeatNumber { get; set; }
+        [ForeignKey("timing")]
         public int Timing_Id { get; set; }
         public Timing? timing { get; set; }
         public bool IsBooked { get; set; } = false;

@@ -4,16 +4,19 @@ using DAL.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace DAL.Migrations
+namespace DAL.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250620004406_EditShowTime")]
+    partial class EditShowTime
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -339,11 +342,14 @@ namespace DAL.Migrations
                     b.Property<int>("Timing_Id")
                         .HasColumnType("int");
 
+                    b.Property<int?>("timingId")
+                        .HasColumnType("int");
+
                     b.HasKey("Ticket_Id");
 
                     b.HasIndex("Order_Id");
 
-                    b.HasIndex("Timing_Id");
+                    b.HasIndex("timingId");
 
                     b.ToTable("Tickets");
                 });
@@ -632,9 +638,7 @@ namespace DAL.Migrations
 
                     b.HasOne("DAL.Data.Models.Timing", "timing")
                         .WithMany("Tickets")
-                        .HasForeignKey("Timing_Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("timingId");
 
                     b.Navigation("Order");
 
