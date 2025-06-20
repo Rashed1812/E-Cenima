@@ -8,6 +8,10 @@
 
   <ItemGroup>
     <Folder Include="Models\" />
+ Demo
+
+    <Folder Include="Data\Repositories\Calsses\" />
+master
   </ItemGroup>
 
   <ItemGroup>

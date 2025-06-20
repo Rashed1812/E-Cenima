@@ -1,8 +1,12 @@
 ﻿using System.Text.Json.Serialization;
 using DAL.Data;
+ Demo
 using DAL.Data.Repositories.Calsses;
 using DAL.Data.Repositories.Intrfaces;
 using Microsoft.AspNetCore.Identity;
+
+using DAL.Data.Repositories.GenericRepositories;
+ master
 using Microsoft.EntityFrameworkCore;
 
 namespace E_Cenima
@@ -25,6 +29,7 @@ namespace E_Cenima
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
             });
 
+ Demo
             // Identity services
             builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<AppDbContext>()
@@ -32,6 +37,8 @@ namespace E_Cenima
 
             // Register seeding service
             builder.Services.AddScoped<IDataSeeding, DataSeeding>();
+
+master
 
             var app = builder.Build();
 
