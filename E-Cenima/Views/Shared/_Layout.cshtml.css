@@ -1,43 +1,75 @@
-﻿/* Please see documentation at https://learn.microsoft.com/aspnet/core/client-side/bundling-and-minification
-for details on configuring this project to bundle and minify static web assets. */
+﻿
 
-a.navbar-brand {
-  white-space: normal;
-  text-align: center;
-  word-break: break-all;
+.navbar {
+    background-color: var(--secondary-color) !important;
+    border-bottom: 3px solid var(--primary-color);
 }
 
-a {
-  color: #0077cc;
+.navbar-brand img {
+    height: 40px;
 }
 
-.btn-primary {
-  color: #fff;
-  background-color: #1b6ec2;
-  border-color: #1861ac;
+.nav-link {
+    color: var(--accent-color) !important;
+    font-weight: 500;
+    margin: 0 10px;
+    transition: all 0.3s ease;
 }
 
-.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
-  color: #fff;
-  background-color: #1b6ec2;
-  border-color: #1861ac;
+    .nav-link:hover {
+        color: var(--primary-color) !important;
+        transform: scale(1.05);
+    }
+
+.active {
+    color: var(--primary-color) !important;
+    font-weight: bold;
 }
 
-.border-top {
-  border-top: 1px solid #e5e5e5;
-}
-.border-bottom {
-  border-bottom: 1px solid #e5e5e5;
-}
-
-.box-shadow {
-  box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+.theme-toggle {
+    cursor: pointer;
+    font-size: 1.2rem;
+    transition: all 0.3s ease;
 }
 
-button.accept-policy {
-  font-size: 1rem;
-  line-height: inherit;
+    .theme-toggle:hover {
+        transform: scale(1.1);
+    }
+
+.favorite-icon {
+    position: relative;
 }
+
+.favorite-count {
+    position: absolute;
+    top: -5px;
+    right: -10px;
+    background: var(--primary-color);
+    color: white;
+    border-radius: 50%;
+    width: 18px;
+    height: 18px;
+    font-size: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+[data-bs-theme="light"] {
+    --secondary-color: #f8f9fa;
+    --accent-color: #212529;
+    --dark-bg: #ffffff;
+    --light-bg: #141414;
+}
+
+    [data-bs-theme="light"] .navbar {
+        background-color: var(--secondary-color) !important;
+        border-bottom: 3px solid var(--primary-color);
+    }
+
+    [data-bs-theme="light"] .nav-link {
+        color: var(--accent-color) !important;
+    }
 
 .footer {
   position: absolute;

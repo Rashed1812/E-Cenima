@@ -1,4 +1,5 @@
 using DAL.Data;
+using DAL.Data.Repositories.Calsses;
 using DAL.Data.Repositories.GenericRepositories;
 using Microsoft.EntityFrameworkCore;
 
@@ -18,7 +19,7 @@ namespace E_Cenima
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
             });
 
-
+            builder.Services.AddScoped<IMovieRepo,MovieRepo>();
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.

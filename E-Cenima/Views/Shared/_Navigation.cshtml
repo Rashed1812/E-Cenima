@@ -1,0 +1,133 @@
+﻿<nav class="navbar navbar-expand-lg sticky-top">
+    <div class="container">
+        <!-- Logo -->
+        <a class="navbar-brand" asp-controller="Home" asp-action="Index">
+            <img class="cine-logo" src="Images/EZLogo.png" alt="CineMagic Logo" >
+        </a>
+
+        <!-- Mobile Toggle Button -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent"
+                aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Navigation Links -->
+        <div class="collapse navbar-collapse" id="navbarContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link active" asp-controller="Movies" asp-action="Index">
+                        <i class="fas fa-film me-1"></i> Movies
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" asp-controller="Actors" asp-action="Index">
+                        <i class="fas fa-users me-1"></i> Actors
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" asp-controller="Cinemas" asp-action="Index">
+                        <i class="fas fa-theater-masks me-1"></i> Cinemas
+                    </a>
+                </li>
+            </ul>
+
+            <!-- Right-side Icons -->
+            <div class="d-flex align-items-center">
+                <!-- Favorites Icon with Badge -->
+                <a href="#" class="nav-link favorite-icon position-relative me-3">
+                    <i class="fas fa-heart"></i>
+                    <span class="favorite-count">3</span>
+                </a>
+
+                <!-- Theme Toggle -->
+                <div class="theme-toggle nav-link" id="themeToggle">
+                    <i class="fas fa-sun"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+
+
+                <style>
+    .cine-logo {
+        transition: transform 0.3s ease; /* Smooth hover effect */
+    }
+
+        .cine-logo:hover {
+            transform: scale(1.05); /* Slight zoom on hover */
+        }
+
+
+    .navbar {
+        background-color: var(--secondary-color) !important;
+        border-bottom: 3px solid var(--primary-color);
+    }
+
+    .navbar-brand img {
+        height: 40px;
+    }
+
+    .nav-link {
+        color: var(--accent-color) !important;
+        font-weight: 500;
+        margin: 0 10px;
+        transition: all 0.3s ease;
+    }
+
+        .nav-link:hover {
+            color: var(--primary-color) !important;
+            transform: scale(1.05);
+        }
+
+    .active {
+        color: var(--primary-color) !important;
+        font-weight: bold;
+    }
+
+    .theme-toggle {
+        cursor: pointer;
+        font-size: 1.2rem;
+        transition: all 0.3s ease;
+    }
+
+        .theme-toggle:hover {
+            transform: scale(1.1);
+        }
+
+    .favorite-icon {
+        position: relative;
+    }
+
+    .favorite-count {
+        position: absolute;
+        top: -5px;
+        right: -10px;
+        background: var(--primary-color);
+        color: white;
+        border-radius: 50%;
+        width: 18px;
+        height: 18px;
+        font-size: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    [data-bs-theme="light"] {
+        --secondary-color: #f8f9fa;
+        --accent-color: #212529;
+        --dark-bg: #ffffff;
+        --light-bg: #141414;
+    }
+
+        [data-bs-theme="light"] .navbar {
+            background-color: var(--secondary-color) !important;
+            border-bottom: 3px solid var(--primary-color);
+        }
+
+        [data-bs-theme="light"] .nav-link {
+            color: var(--accent-color) !important;
+        }
+
+                </style>

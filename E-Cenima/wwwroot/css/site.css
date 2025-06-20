@@ -1,3 +1,10 @@
+:root {
+    --primary-color: #e50914; /* Netflix red */
+    --secondary-color: #221f1f; /* Dark gray */
+    --accent-color: #f5f5f1; /* Light cream */
+    --dark-bg: #141414;
+    --light-bg: #ffffff;
+}
 html {
   font-size: 14px;
 }
@@ -20,3 +27,6 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+
+
