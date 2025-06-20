@@ -12,11 +12,9 @@ namespace DAL.Data.Models.Movie_Module
         Comedy,
         Drama,
         Horror,
-        SciFi,
-        Romance,
-        Thriller,
-        Documentary,
+        ScienceFiction,
         Animation,
-        Fantasy
+        Documentary,
+        Romance
     }
 }

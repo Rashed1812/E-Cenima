@@ -4,6 +4,7 @@ using DAL.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DAL.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250619230736_EditTicketOrder")]
+    partial class EditTicketOrder
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -295,6 +298,9 @@ namespace DAL.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Showtime_Id"));
 
+                    b.Property<int>("CinemaId")
+                        .HasColumnType("int");
+
                     b.Property<int>("Cinema_Id")
                         .HasColumnType("int");
 
@@ -306,7 +312,7 @@ namespace DAL.Data.Migrations
 
                     b.HasKey("Showtime_Id");
 
-                    b.HasIndex("Cinema_Id");
+                    b.HasIndex("CinemaId");
 
                     b.HasIndex("Movie_Id");
 
@@ -339,11 +345,14 @@ namespace DAL.Data.Migrations
                     b.Property<int>("Timing_Id")
                         .HasColumnType("int");
 
+                    b.Property<int?>("timingId")
+                        .HasColumnType("int");
+
                     b.HasKey("Ticket_Id");
 
                     b.HasIndex("Order_Id");
 
-                    b.HasIndex("Timing_Id");
+                    b.HasIndex("timingId");
 
                     b.ToTable("Tickets");
                 });
@@ -609,7 +618,7 @@ namespace DAL.Data.Migrations
                 {
                     b.HasOne("DAL.Data.Models.Cinema", "Cinema")
                         .WithMany("Showtimes")
-                        .HasForeignKey("Cinema_Id")
+                        .HasForeignKey("CinemaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -632,9 +641,7 @@ namespace DAL.Data.Migrations
 
                     b.HasOne("DAL.Data.Models.Timing", "timing")
                         .WithMany("Tickets")
-                        .HasForeignKey("Timing_Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("timingId");
 
                     b.Navigation("Order");
 

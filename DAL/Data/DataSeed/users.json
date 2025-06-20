@@ -1,0 +1,16 @@
+[
+    {
+        "FullName": "Admin User",
+        "UserName": "admin-user",
+        "Email": "admin@gmail.com",
+        "Password": "P@ssw0rd",
+        "Role": "Admin"
+    },
+    {
+        "FullName": "Application User",
+        "UserName": "app-user",
+        "Email": "user@gmail.com",
+        "Password": "P@ssw0rd",
+        "Role": "User"
+    }
+]
