@@ -1,0 +1,32 @@
+[
+    {
+        "Name": "Renaissance Cinemas Alex",
+        "Address": "San Stefano, Alexandria",
+        "Logo": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTs9x0yZUbJHluAawK_1JGoAvoSfnZkZwpWjg&s",
+        "Capacity": 150
+    },
+    {
+        "Name": "Renaissance Cinemas Madinaty",
+        "Address": "Open Air Mall, Madinaty, New Cairo",
+        "Logo": "https://liteway-lighting.com/wp-content/uploads/2020/09/Delta-20-scaled.jpg",
+        "Capacity": 120
+    },
+    {
+        "Name": "Renaissance Cinemas Al Rehab City",
+        "Address": "Mall 1, Al Rehab City, New Cairo",
+        "Logo": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTqFVmTGA3AHc7safqLiVGM0eoE3v5zvghe1g&s",
+        "Capacity": 100
+    },
+    {
+        "Name": "Renaissance Cinemas Downtown Cairo",
+        "Address": "8 Emad El Din Street, Downtown, Cairo",
+        "Logo": "https://assets.cairo360.com/app/uploads/2010/02/rnc-downtwon.png",
+        "Capacity": 200
+    },
+    {
+        "Name": "Vox Cinemas Alexandria",
+        "Address": "City Centre Alexandria, Alexandria",
+        "Logo": "https://www.voxcinemas.com/assets/images/voxcinemas-logo.png",
+        "Capacity": 180
+    }
+]

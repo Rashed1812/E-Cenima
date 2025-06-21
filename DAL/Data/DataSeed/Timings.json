@@ -1,0 +1,302 @@
+[
+    {
+        "ShowTime_Id": 6,
+        "StartTime": "04:00:00",
+        "Price": 107
+    },
+    {
+        "ShowTime_Id": 6,
+        "StartTime": "06:00:00",
+        "Price": 117
+    },
+    {
+        "ShowTime_Id": 6,
+        "StartTime": "08:00:00",
+        "Price": 127
+    },
+    {
+        "ShowTime_Id": 6,
+        "StartTime": "10:00:00",
+        "Price": 137
+    },
+    {
+        "ShowTime_Id": 6,
+        "StartTime": "04:00:00",
+        "Price": 108
+    },
+    {
+        "ShowTime_Id": 6,
+        "StartTime": "06:00:00",
+        "Price": 118
+    },
+    {
+        "ShowTime_Id": 6,
+        "StartTime": "08:00:00",
+        "Price": 128
+    },
+    {
+        "ShowTime_Id": 6,
+        "StartTime": "10:00:00",
+        "Price": 138
+    },
+    {
+        "ShowTime_Id": 6,
+        "StartTime": "04:00:00",
+        "Price": 109
+    },
+    {
+        "ShowTime_Id": 6,
+        "StartTime": "06:00:00",
+        "Price": 119
+    },
+    {
+        "ShowTime_Id": 6,
+        "StartTime": "08:00:00",
+        "Price": 129
+    },
+    {
+        "ShowTime_Id": 6,
+        "StartTime": "10:00:00",
+        "Price": 139
+    },
+    {
+        "ShowTime_Id": 7,
+        "StartTime": "04:00:00",
+        "Price": 108
+    },
+    {
+        "ShowTime_Id": 7,
+        "StartTime": "06:00:00",
+        "Price": 118
+    },
+    {
+        "ShowTime_Id": 7,
+        "StartTime": "08:00:00",
+        "Price": 128
+    },
+    {
+        "ShowTime_Id": 7,
+        "StartTime": "10:00:00",
+        "Price": 138
+    },
+    {
+        "ShowTime_Id": 7,
+        "StartTime": "04:00:00",
+        "Price": 109
+    },
+    {
+        "ShowTime_Id": 7,
+        "StartTime": "06:00:00",
+        "Price": 119
+    },
+    {
+        "ShowTime_Id": 7,
+        "StartTime": "08:00:00",
+        "Price": 129
+    },
+    {
+        "ShowTime_Id": 7,
+        "StartTime": "10:00:00",
+        "Price": 139
+    },
+    {
+        "ShowTime_Id": 7,
+        "StartTime": "04:00:00",
+        "Price": 110
+    },
+    {
+        "ShowTime_Id": 7,
+        "StartTime": "06:00:00",
+        "Price": 120
+    },
+    {
+        "ShowTime_Id": 7,
+        "StartTime": "08:00:00",
+        "Price": 130
+    },
+    {
+        "ShowTime_Id": 7,
+        "StartTime": "10:00:00",
+        "Price": 140
+    },
+    {
+        "ShowTime_Id": 8,
+        "StartTime": "04:00:00",
+        "Price": 109
+    },
+    {
+        "ShowTime_Id": 8,
+        "StartTime": "06:00:00",
+        "Price": 119
+    },
+    {
+        "ShowTime_Id": 8,
+        "StartTime": "08:00:00",
+        "Price": 129
+    },
+    {
+        "ShowTime_Id": 8,
+        "StartTime": "10:00:00",
+        "Price": 139
+    },
+    {
+        "ShowTime_Id": 8,
+        "StartTime": "04:00:00",
+        "Price": 110
+    },
+    {
+        "ShowTime_Id": 8,
+        "StartTime": "06:00:00",
+        "Price": 120
+    },
+    {
+        "ShowTime_Id": 8,
+        "StartTime": "08:00:00",
+        "Price": 130
+    },
+    {
+        "ShowTime_Id": 8,
+        "StartTime": "10:00:00",
+        "Price": 140
+    },
+    {
+        "ShowTime_Id": 8,
+        "StartTime": "04:00:00",
+        "Price": 111
+    },
+    {
+        "ShowTime_Id": 8,
+        "StartTime": "06:00:00",
+        "Price": 121
+    },
+    {
+        "ShowTime_Id": 8,
+        "StartTime": "08:00:00",
+        "Price": 131
+    },
+    {
+        "ShowTime_Id": 8,
+        "StartTime": "10:00:00",
+        "Price": 141
+    },
+    {
+        "ShowTime_Id": 9,
+        "StartTime": "04:00:00",
+        "Price": 110
+    },
+    {
+        "ShowTime_Id": 9,
+        "StartTime": "06:00:00",
+        "Price": 120
+    },
+    {
+        "ShowTime_Id": 9,
+        "StartTime": "08:00:00",
+        "Price": 130
+    },
+    {
+        "ShowTime_Id": 9,
+        "StartTime": "10:00:00",
+        "Price": 140
+    },
+    {
+        "ShowTime_Id": 9,
+        "StartTime": "04:00:00",
+        "Price": 111
+    },
+    {
+        "ShowTime_Id": 9,
+        "StartTime": "06:00:00",
+        "Price": 121
+    },
+    {
+        "ShowTime_Id": 9,
+        "StartTime": "08:00:00",
+        "Price": 131
+    },
+    {
+        "ShowTime_Id": 9,
+        "StartTime": "10:00:00",
+        "Price": 141
+    },
+    {
+        "ShowTime_Id": 9,
+        "StartTime": "04:00:00",
+        "Price": 112
+    },
+    {
+        "ShowTime_Id": 9,
+        "StartTime": "06:00:00",
+        "Price": 122
+    },
+    {
+        "ShowTime_Id": 9,
+        "StartTime": "08:00:00",
+        "Price": 132
+    },
+    {
+        "ShowTime_Id": 9,
+        "StartTime": "10:00:00",
+        "Price": 142
+    },
+    {
+        "ShowTime_Id": 10,
+        "StartTime": "04:00:00",
+        "Price": 111
+    },
+    {
+        "ShowTime_Id": 10,
+        "StartTime": "06:00:00",
+        "Price": 121
+    },
+    {
+        "ShowTime_Id": 10,
+        "StartTime": "08:00:00",
+        "Price": 131
+    },
+    {
+        "ShowTime_Id": 10,
+        "StartTime": "10:00:00",
+        "Price": 141
+    },
+    {
+        "ShowTime_Id": 10,
+        "StartTime": "04:00:00",
+        "Price": 112
+    },
+    {
+        "ShowTime_Id": 10,
+        "StartTime": "06:00:00",
+        "Price": 122
+    },
+    {
+        "ShowTime_Id": 10,
+        "StartTime": "08:00:00",
+        "Price": 132
+    },
+    {
+        "ShowTime_Id": 10,
+        "StartTime": "10:00:00",
+        "Price": 142
+    },
+    {
+        "ShowTime_Id": 10,
+        "StartTime": "04:00:00",
+        "Price": 113
+    },
+    {
+        "ShowTime_Id": 10,
+        "StartTime": "06:00:00",
+        "Price": 123
+    },
+    {
+        "ShowTime_Id": 10,
+        "StartTime": "08:00:00",
+        "Price": 133
+    },
+    {
+        "ShowTime_Id": 10,
+        "StartTime": "10:00:00",
+        "Price": 143
+    }
+]

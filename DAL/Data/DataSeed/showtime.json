@@ -1,0 +1,81 @@
+[
+    {
+        "Movie_Id": 9,
+        "Cinema_Id": 9,
+        "Date": "2026-06-03"
+    },
+    {
+        "Movie_Id": 9,
+        "Cinema_Id": 10,
+        "Date": "2026-06-04"
+    },
+    {
+        "Movie_Id": 9,
+        "Cinema_Id": 11,
+        "Date": "2026-06-05"
+    },
+
+    {
+        "Movie_Id": 10,
+        "Cinema_Id": 9,
+        "Date": "2026-06-04"
+    },
+    {
+        "Movie_Id": 10,
+        "Cinema_Id": 10,
+        "Date": "2026-06-05"
+    },
+    {
+        "Movie_Id": 10,
+        "Cinema_Id": 11,
+        "Date": "2026-06-06"
+    },
+
+    {
+        "Movie_Id": 11,
+        "Cinema_Id": 9,
+        "Date": "2026-06-05"
+    },
+    {
+        "Movie_Id": 11,
+        "Cinema_Id": 10,
+        "Date": "2026-06-06"
+    },
+    {
+        "Movie_Id": 11,
+        "Cinema_Id": 11,
+        "Date": "2026-06-07"
+    },
+
+    {
+        "Movie_Id": 12,
+        "Cinema_Id": 9,
+        "Date": "2026-06-06"
+    },
+    {
+        "Movie_Id": 12,
+        "Cinema_Id": 10,
+        "Date": "2026-06-07"
+    },
+    {
+        "Movie_Id": 12,
+        "Cinema_Id": 11,
+        "Date": "2026-06-08"
+    },
+
+    {
+        "Movie_Id": 13,
+        "Cinema_Id": 9,
+        "Date": "2026-06-07"
+    },
+    {
+        "Movie_Id": 13,
+        "Cinema_Id": 10,
+        "Date": "2026-06-08"
+    },
+    {
+        "Movie_Id": 13,
+        "Cinema_Id": 11,
+        "Date": "2026-06-09"
+    }
+]
