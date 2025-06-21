@@ -1,8 +1,73 @@
-﻿@{
+﻿@using BLL.DTO.Movie
+@model ICollection<MovieDto>
+@{
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="container main">
+    <h1 class="text-center mb-4">Our Movie Collection</h1>
+
+    <div class="row row-cols-1 row-cols-md-3 row-cols-lg-4 g-4">
+        @foreach (MovieDto movie in Model)
+        {
+            <div class="col">
+                <div class="card h-100 shadow-sm">
+                    <!-- Movie Image -->
+                    <img src="@movie.ImageURL" class="card-img-top" alt="@movie.Name" style="height: 300px; object-fit: cover;">
+
+                    <div class="card-body">
+                        <!-- Movie Title -->
+                        <h5 class="card-title">@movie.Name</h5>
+
+                        <!-- Movie Category Badge -->
+                        <span class="badge bg-primary mb-2">@movie.MovieCategory</span>
+
+                        <!-- Release Date -->
+                        <p class="card-text">
+                            <small class="text-muted">
+                                Released: @movie.ReleaseDate.ToString("MMMM dd, yyyy")
+                            </small>
+                        </p>
+
+                        <!-- Shortened Description -->
+                        <p class="card-text">@(movie.Description.Length > 100 ? movie.Description.Substring(0, 100) + "..." : movie.Description)</p>
+                    </div>
+
+                    <div class="card-footer bg-white">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <!-- Details Button -->
+                            <a href="#" class="btn btn-outline-primary btn-sm">View Details</a>
+
+                            <!-- Trailer Button (if available) -->
+                            @if (!string.IsNullOrEmpty(movie.TrailerURL))
+                            {
+                                <a href="@movie.TrailerURL" target="_blank" class="btn btn-outline-danger btn-sm">
+                                    <i class="bi bi-play-fill"></i> Trailer
+                                </a>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
 </div>
+
+
+    <style>
+        .main{
+            margin-bottom:350px;
+        }
+        .card {
+            transition: transform 0.3s ease;
+        }
+
+            .card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            }
+
+        .card-img-top {
+            border-bottom: 1px solid rgba(0,0,0,0.125);
+        }
+    </style>

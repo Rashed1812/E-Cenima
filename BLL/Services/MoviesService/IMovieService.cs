@@ -1,4 +1,5 @@
-﻿using DAL.Data.Repositories.Calsses;
+﻿using BLL.DTO.Movie;
+using DAL.Data.Repositories.Calsses;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,8 @@ using System.Threading.Tasks;
 
 namespace BLL.Services.Movies
 {
-    internal interface IMovieService
+    public interface IMovieService
     {
+          Task<ICollection<MovieDto>> GetAllAsync();
     }
 }
