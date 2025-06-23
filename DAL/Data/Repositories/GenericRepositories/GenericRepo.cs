@@ -15,7 +15,7 @@ namespace DAL.Data.Repositories.GenericRepositories
         public async Task AddAsync(T item)
         {
            await context.Set<T>().AddAsync(item);
-
+           await context.SaveChangesAsync();
         }
 
         public async Task<IEnumerable<T>> FindAsync(Expression<Func<T, bool>> predicate)

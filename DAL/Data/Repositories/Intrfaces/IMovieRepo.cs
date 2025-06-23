@@ -1,4 +1,7 @@
-﻿using System;
+﻿using DAL.Data.Models;
+using DAL.Data.Models.Movie_Module;
+using DAL.Data.Repositories.GenericRepositories;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,8 +9,10 @@ using System.Threading.Tasks;
 
 namespace DAL.Data.Repositories.Intrfaces
 {
-    internal interface IMovieRepo
+    public interface IMovieRepo:IGenericRepo<Movie>
     {
-
+        Task<IEnumerable<Movie>> GetMoviesByCategoryAsync(Category category);
+        Task<IEnumerable<Movie>> GetMoviesByProducerAsync(Producer producer);
+        Task<IEnumerable<Movie>> GetMoviesWithShowtimesAsync();
     }
 }
