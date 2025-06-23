@@ -8,7 +8,7 @@
         <!-- Mobile Toggle Button -->
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent"
                 aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
+            <i class="bi bi-list" style="font-size: 2.5rem; color: var(--accent-color);"></i>
         </button>
 
         <!-- Navigation Links -->
@@ -36,7 +36,7 @@
                 <!-- Favorites Icon with Badge -->
                 <a href="#" class="nav-link favorite-icon position-relative me-3">
                     <i class="fas fa-heart"></i>
-                    <span class="favorite-count">3</span>
+                    <span id="FavouriteMovie" class="favorite-count">0</span>
                 </a>
 
                 <!-- Theme Toggle -->
@@ -49,7 +49,7 @@
 </nav>
 
 
-                <style>
+<style>
     .cine-logo {
         transition: transform 0.3s ease; /* Smooth hover effect */
     }
@@ -68,6 +68,11 @@
         height: 40px;
     }
 
+    .navbar-toggler-icon {
+        background-image: none !important;
+    }
+
+    
     .nav-link {
         color: var(--accent-color) !important;
         font-weight: 500;
@@ -121,13 +126,42 @@
         --light-bg: #141414;
     }
 
-        [data-bs-theme="light"] .navbar {
-            background-color: var(--secondary-color) !important;
-            border-bottom: 3px solid var(--primary-color);
-        }
+            [data-bs-theme="light"] .navbar {
+                background-color: var(--secondary-color) !important;
+                border-bottom: 3px solid var(--primary-color);
+            }
 
-        [data-bs-theme="light"] .nav-link {
-            color: var(--accent-color) !important;
-        }
+            [data-bs-theme="light"] .nav-link {
+                color: var(--accent-color) !important;
+            }
 
-                </style>
+        [data-bs-theme="light"] .navbar-toggler-icon {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='%23ffffff' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") !important;
+        }
+    </style>
+
+<script>
+    function updateFavoriteCount() {
+         const favoriteCountElement = document.getElementById('FavouriteMovie');
+         const favorites = JSON.parse(localStorage.getItem('favoriteMovies') || '[]');
+         if (favoriteCountElement) {
+             favoriteCountElement.textContent = favorites.length;
+         }
+     }
+
+     document.addEventListener('DOMContentLoaded', () => {
+         updateFavoriteCount(); // Initial update
+     });
+
+     // Listen for same-page updates
+     window.addEventListener('favoriteUpdated', () => {
+         updateFavoriteCount();
+     });
+
+     // Listen for cross-tab updates
+     window.addEventListener('storage', (event) => {
+         if (event.key === 'favoriteMovies') {
+             updateFavoriteCount();
+         }
+     });
+</script>
