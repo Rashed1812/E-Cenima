@@ -17,5 +17,6 @@ namespace BLL.Services.Movies
         Task<bool> DeleteAsync(int id);
         Task<ICollection<MovieDto>> GetMoviesByCategoryAsync(int categoryId);
         Task<ICollection<MovieDto>> GetMoviesWithShowtimesAsync();
+        Task<ICollection<MovieDto>> GetMovieByActor(int actorId);
     }
 }

@@ -19,6 +19,27 @@ namespace DAL.Data.Repositories.Calsses
             _context = context;
         }
 
+        public async Task<IEnumerable<Movie>> GetMovieByActorAsync(int actorID)
+        {
+            var moviesWithSpecificActor = await _context.Movies
+            .Where(m => m.MovieActors.Any(ma => ma.ActorId == actorID))
+            .Include(m => m.MovieActors)
+                .ThenInclude(ma => ma.Actor).Select(a =>
+                new Movie {
+                    Id = a.Id,
+                    Name = a.Name,
+                    Description = a.Description,
+                    ImageURL = a.ImageURL,
+                    TrailerURL = a.TrailerURL,
+                    MovieCategory= a.MovieCategory,
+                  
+                })
+            .ToListAsync();
+
+            return moviesWithSpecificActor;
+
+        }
+
         public async Task<IEnumerable<Movie>> GetMoviesByCategoryAsync(Category category)
         {
             var movies = await _context.Movies

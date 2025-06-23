@@ -1,0 +1,208 @@
+﻿@model MoviesbyActorDto
+@{
+    ViewData["Title"] = "MoviesByActor";
+}
+
+<div class="container">
+   
+
+    <div class="actor-profile">
+        <div class="actor-image-container">
+            <img src="/@Model.Actor.ProfilePictureURL" alt="@Model.Actor.FullName" class="actor-image">
+        </div>
+
+        <div class="actor-info">
+            <h2 class="actor-name">@Model.Actor.FullName</h2>
+            <p class="actor-bio">@Model.Actor.Bio</p>
+        </div>
+    </div>
+
+    <h2 class="section-title">Movies</h2>
+
+    <div class="movies-grid">
+        @foreach (var movie in Model.Movies)
+        {
+          
+            <div class="movie-card">
+                <img src="/@movie.ImageURL" alt="@movie.Name" class="movie-poster">
+                <div class="movie-details">
+                    <h3 class="movie-title">@movie.Name</h3>
+                    <div class="movie-meta">
+                        <span>@movie.ReleaseDate.ToString("yyyy")</span>
+                        <span class="movie-category">@movie.MovieCategory</span>
+                    </div>
+                    <a href="@Url.Action("Book", "Movies", new { id = movie.Id })" class="book-button">Book Now</a>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+<style>
+  
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px 0;
+        margin-bottom: 30px;
+        border-bottom: 1px solid var(--secondary-color);
+    }
+
+    .page-title {
+        font-size: 2rem;
+        margin: 0;
+        color: var(--primary-color);
+    }
+
+    .theme-toggle {
+        background: var(--secondary-color);
+        color: var(--accent-color);
+        border: none;
+        padding: 8px 15px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-weight: bold;
+    }
+
+    .actor-profile {
+        display: flex;
+        gap: 40px;
+        margin-bottom: 50px;
+    }
+
+    .actor-image-container {
+        flex: 0 0 300px;
+    }
+
+    .actor-image {
+        width: 100%;
+        border-radius: 8px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    .actor-info {
+        flex: 1;
+    }
+
+    .actor-name {
+        font-size: 2.2rem;
+        margin: 0 0 15px 0;
+        color: var(--primary-color);
+    }
+
+    .actor-bio {
+        line-height: 1.7;
+        font-size: 1.1rem;
+    }
+
+    .section-title {
+        font-size: 1.8rem;
+        margin: 40px 0 20px 0;
+        color: var(--primary-color);
+        border-bottom: 2px solid var(--secondary-color);
+        padding-bottom: 10px;
+    }
+
+    .movies-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 30px;
+        margin-top: 20px;
+    }
+
+    .movie-card {
+        background-color: var(--card-bg);
+        border-radius: 8px;
+        overflow: hidden;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+        .movie-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+    .movie-poster {
+        width: 100%;
+        height: 350px;
+        object-fit: cover;
+    }
+
+    .movie-details {
+        padding: 15px;
+    }
+
+    .movie-title {
+        font-size: 1.2rem;
+        margin: 0 0 10px 0;
+        color: var(--text-primary);
+    }
+
+    .movie-meta {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 15px;
+        color: var(--text-secondary);
+        font-size: 0.9rem;
+    }
+
+    .movie-category {
+        background-color: var(--secondary-color);
+        color: var(--accent-color);
+        padding: 3px 8px;
+        border-radius: 4px;
+        font-size: 0.8rem;
+    }
+
+    .book-button {
+        display: block;
+        width: 100%;
+        background-color: var(--primary-color);
+        color: white;
+        border: none;
+        padding: 10px;
+        border-radius: 4px;
+        font-size: 1rem;
+        cursor: pointer;
+        text-align: center;
+        text-decoration: none;
+        transition: background-color 0.3s ease;
+    }
+
+        .book-button:hover {
+            background-color: var(--secondary-color);
+            color: var(--text-primary);
+        }
+
+    @@media (max-width: 768px) {
+        .actor-profile {
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        .actor-image-container {
+            flex: 0 0 auto;
+            text-align: center;
+        }
+
+        .actor-image {
+            max-width: 250px;
+        }
+
+        .movies-grid {
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .movie-poster {
+            height: 300px;
+        }
+    }
+</style>

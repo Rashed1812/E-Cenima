@@ -1,4 +1,5 @@
 ﻿using BLL.Services.ActorService;
+using BLL.Services.Movies;
 using Microsoft.AspNetCore.Mvc;
 
 namespace E_Cenima.Controllers
@@ -10,6 +11,7 @@ namespace E_Cenima.Controllers
             var actors = await _actorService.GetAllAsync();
             return View(actors);
         }
+        
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || id <= 0)

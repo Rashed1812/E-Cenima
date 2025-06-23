@@ -22,7 +22,7 @@
                                 <a asp-controller="Movies" asp-action="Index" class="btn btn-custom btn-lg">
                                     Book Now <i class="bi bi-ticket-perforated ms-2"></i>
                                 </a>
-                                <a asp-controller="Movies" asp-action="Index" class="btn btn-View btn-lg">
+                                <a href="#Movies" class="btn btn-View btn-lg">
                                     View Movies <i class="bi bi-film ms-2"></i>
                                 </a>
                             </div>
@@ -80,7 +80,7 @@
                                             </p>
 
                                             <div class="d-flex flex-wrap gap-3 align-items-center">
-                                                <a asp-controller="Movies" asp-action="Details" asp-route-id="@featuredMovie.Id" class="btn btn-booking">
+                                                <a asp-controller="Movie" asp-action="Details" asp-route-id="@featuredMovie.Id" class="btn btn-booking">
                                                     Book Tickets <i class="bi bi-ticket-perforated ms-2"></i>
                                                 </a>
                                                 <button class="btn  text-primary favorite-btn" data-movie-id="@featuredMovie.Name" onclick="toggleFavorite(this)">
@@ -112,7 +112,7 @@
                 }
             </div>
         </section>
-        <h1 class="text-center mb-4">Our Movie Collection</h1>
+        <h1 id="Movies" class="text-center mb-4">Our Movie Collection</h1>
 
 
         <div class="row row-cols-1 row-cols-md-3 row-cols-lg-4 g-4">
@@ -133,7 +133,8 @@
                         </div>
                         <div class="card-footer bg-transparent border-0">
                             <div class="d-flex justify-content-between align-items-center">
-                                <a href="#" class="btn btn-sm" style="background-color: var(--primary-color); color: var(--light-bg);">Go to Details</a>
+                                <a asp-controller ="Movie" asp-action="Details" asp-route-id="@movie.Id" class="btn btn-sm" style="background-color: var(--primary-color); color: var(--light-bg);">
+                                    Go to Details</a>
                                 @if (!string.IsNullOrEmpty(movie.TrailerURL))
                                 {
                                     <a href="@movie.TrailerURL" target="_blank" class="btn btn-outline-danger btn-sm">

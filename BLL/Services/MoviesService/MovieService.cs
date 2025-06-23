@@ -35,6 +35,14 @@ namespace BLL.Services.Movies
             return movie.MapToDetailsDto();
         }
 
+        public async Task<ICollection<MovieDto>> GetMovieByActor(int actorId)
+        {
+            var movies = await _movieRepo.GetMovieByActorAsync(actorId);
+           
+
+            return movies.Select(s=>MovieMapper.MapToDto(s)).ToList();
+        }
+
         public Task<ICollection<MovieDto>> GetMoviesByCategoryAsync(int categoryId)
         {
             throw new NotImplementedException();

@@ -2,7 +2,7 @@
     <div class="container">
         <!-- Logo -->
         <a class="navbar-brand" asp-controller="Home" asp-action="Index">
-            <img class="cine-logo" src="Images/EZLogo.png" alt="CineMagic Logo" >
+            <img class="cine-logo" src="/Images/EZLogo.png" alt="CineMagic Logo" >
         </a>
 
         <!-- Mobile Toggle Button -->
@@ -20,7 +20,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" asp-controller="Actors" asp-action="Index">
+                    <a class="nav-link" asp-controller="actor" asp-action="Index">
                         <i class="fas fa-users me-1"></i> Actors
                     </a>
                 </li>
@@ -124,6 +124,9 @@
         --accent-color: #212529;
         --dark-bg: #ffffff;
         --light-bg: #141414;
+        --text-primary: #221f1f;
+        --text-secondary: #555555;
+        --card-bg: #ffffff;
     }
 
             [data-bs-theme="light"] .navbar {

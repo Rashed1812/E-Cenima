@@ -1,7 +1,177 @@
-﻿@model ICollection<ActorDto>
+﻿@model List<ActorDto>
 @{
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
 
+<div class="header">
+    <h1 class="page-title">Trending Actors</h1>
+    <p class="page-subtitle">The most popular performers this week</p>
+</div>
+
+<div class="actors-grid">
+    @foreach (var actor in Model)
+    {
+        <div class="actor-card">
+            <div class="actor-card-header">
+                <img src="@actor.ProfilePictureURL" alt="@actor.FullName" class="actor-image">
+                <div class="actor-badge">Hot</div>
+            </div>
+            <div class="actor-info">
+                <h3 class="actor-name">@actor.FullName</h3>
+                <p class="actor-bio">@(actor.Bio.Length > 120 ? actor.Bio.Substring(0, 120) + "..." : actor.Bio)</p>
+                <div class="actor-actions">
+                    <a asp-action="MoviesByActor" asp-controller="Movie" asp-route-Id="@actor.Id" class="btn btn-films">
+                        <i class="fas fa-play"></i> View Movies
+                    </a>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<style>
+
+    .header {
+        text-align: center;
+        margin-bottom: 40px;
+        padding: 20px 0;
+        background: linear-gradient(to right, var(--secondary-color), var(--dark-bg));
+        border-bottom: 1px solid var(--primary-color);
+    }
+
+    .page-title {
+        font-size: 2.8rem;
+        color: var(--primary-color);
+        margin-bottom: 5px;
+        font-weight: 700;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+    }
+
+    .page-subtitle {
+        font-size: 1.3rem;
+        color: var(--accent-color);
+        opacity: 0.8;
+    }
+
+    .actors-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 30px;
+        padding: 20px;
+        max-width: 1400px;
+        margin: 0 auto;
+    }
+
+    .actor-card {
+        background: var(--secondary-color);
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+        transition: all 0.3s ease;
+        border: 1px solid rgba(255,255,255,0.1);
+    }
+
+        .actor-card:hover {
+            transform: scale(1.03);
+            box-shadow: 0 12px 20px rgba(0,0,0,0.4);
+            border-color: var(--primary-color);
+        }
+
+    .actor-card-header {
+        position: relative;
+        height: 350px;
+        overflow: hidden;
+    }
+
+    .actor-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.5s ease;
+    }
+
+    .actor-card:hover .actor-image {
+        transform: scale(1.1);
+    }
+
+    .actor-badge {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        background: var(--primary-color);
+        color: white;
+        padding: 5px 15px;
+        border-radius: 20px;
+        font-size: 0.9rem;
+        font-weight: bold;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    }
+
+    .actor-info {
+        padding: 20px;
+        background: linear-gradient(to bottom, transparent, rgba(0,0,0,0.7));
+    }
+
+    .actor-name {
+        margin: 0 0 12px 0;
+        color: var(--accent-color);
+        font-size: 1.4rem;
+        font-weight: 600;
+    }
+
+    .actor-bio {
+        color: rgba(245,245,241,0.8);
+        margin-bottom: 20px;
+        line-height: 1.5;
+        font-size: 0.95rem;
+        min-height: 60px;
+    }
+
+    .actor-actions {
+        display: flex;
+        justify-content: center;
+    }
+
+    .btn-films {
+        display: inline-flex;
+        align-items: center;
+        background: var(--primary-color);
+        color: white;
+        padding: 10px 25px;
+        border-radius: 4px;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 0.9rem;
+        letter-spacing: 0.5px;
+        border: none;
+        cursor: pointer;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    }
+
+        .btn-films:hover {
+            background: #f40612;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+
+        .btn-films i {
+            margin-right: 10px;
+            font-size: 1rem;
+        }
+
+    @@media (max-width: 768px) {
+        .actors-grid {
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 20px;
+        }
+
+        .actor-card-header {
+            height: 300px;
+        }
+    }
+</style>
