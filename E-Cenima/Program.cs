@@ -1,7 +1,10 @@
+using BLL.Services.ActorService;
+using BLL.Services.CinemaService;
 using BLL.Services.Movies;
 using DAL.Data;
 using DAL.Data.Repositories.Calsses;
 using DAL.Data.Repositories.GenericRepositories;
+using DAL.Data.Repositories.Intrfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace E_Cenima
@@ -22,6 +25,11 @@ namespace E_Cenima
 
             builder.Services.AddScoped<IMovieRepo, MovieRepo>();
             builder.Services.AddScoped<IMovieService,MovieService>();
+            builder.Services.AddScoped<ICinemaRepo, CinemaRepo>();
+            builder.Services.AddScoped<ICenimaService, CinemaService>();
+            builder.Services.AddScoped<IActorRepo, ActorRepo>();
+            builder.Services.AddScoped<IActorService, ActorService>();
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.

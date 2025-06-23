@@ -1,4 +1,4 @@
-﻿namespace E_Cenima.Models
+﻿namespace E_Cenima.Models.User
 {
     public class UserViewModel
     {

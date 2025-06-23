@@ -10,6 +10,12 @@ namespace BLL.Services.Movies
 {
     public interface IMovieService
     {
-          Task<ICollection<MovieDto>> GetAllAsync();
+        Task<ICollection<MovieDto>> GetAllAsync();
+        Task<MovieDetailsDTO> GetByIdAsync(int id);
+        Task CreateAsync(CreateMovieDTO createMovieDTO);
+        Task<MovieDto> UpdateAsync(int id, UpdateMovieDTO updateMovieDTO);
+        Task<bool> DeleteAsync(int id);
+        Task<ICollection<MovieDto>> GetMoviesByCategoryAsync(int categoryId);
+        Task<ICollection<MovieDto>> GetMoviesWithShowtimesAsync();
     }
 }
