@@ -10,5 +10,6 @@ namespace DAL.Data.Repositories.Intrfaces
 {
     public interface ICinemaRepo :IGenericRepo<Cinema>
     {
+        public Task<ICollection<Cinema>> GetAllWiithTime();
     }
 }

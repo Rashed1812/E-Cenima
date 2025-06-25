@@ -7,7 +7,7 @@ namespace E_Cenima.Controllers
     {
         public async Task<IActionResult> Index()
         {
-            var cinemas = await _cenimaService.GetAllCinemas();
+            var cinemas = await _cenimaService.GetCinemasWithTimes();
             return View(cinemas);
         }
         public async Task<IActionResult> Details(int? id)

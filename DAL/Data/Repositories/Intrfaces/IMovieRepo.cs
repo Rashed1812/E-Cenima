@@ -13,7 +13,7 @@ namespace DAL.Data.Repositories.Intrfaces
     {
         Task<IEnumerable<Movie>> GetMoviesByCategoryAsync(Category category);
         Task<IEnumerable<Movie>> GetMoviesByProducerAsync(Producer producer);
-        Task<IEnumerable<Movie>> GetMoviesWithShowtimesAsync();
+        Task<Movie> GetMoviesWithShowtimesAsync(int MovieID);
         Task<IEnumerable<Movie>> GetMovieByActorAsync(int actorID);
     }
 }

@@ -53,12 +53,14 @@ namespace DAL.Data.Repositories.Calsses
             return movies;
         }
 
-        public async Task<IEnumerable<Movie>> GetMoviesWithShowtimesAsync()
+        public async Task<Movie> GetMoviesWithShowtimesAsync(int MovieId)
         {
-            var movies = await _context.Movies
-                .Include(m => m.Showtimes)
-                .ToListAsync();
-            return movies;
+            var movie = await _context.Movies.Include(m => m.Showtimes)
+                 .ThenInclude(sh => sh.Cinema).ThenInclude(sh => sh.Showtimes).ThenInclude(c=>c.Timings).Where(m=>m.Id==MovieId).FirstOrDefaultAsync();
+
+        
+          
+            return movie!;
         }
     }
 }

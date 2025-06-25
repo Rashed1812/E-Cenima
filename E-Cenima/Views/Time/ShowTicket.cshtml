@@ -1,0 +1,378 @@
+﻿@using DAL.Data.Models
+
+@model Timing
+
+@{
+    ViewData["Title"] = "Seat Selection";
+}
+
+<div class="seat-selection-container" data-bs-theme="dark">
+    <div class="header-section">
+        <h2>Select Your Seats</h2>
+        <div class="timing-info">
+            <span class="start-time">@Model.StartTime.ToString(@"hh\:mm")</span>
+            <span class="price">$@Model.Price</span>
+        </div>
+    </div>
+
+    <div class="screen-container">
+        <div class="screen-label">SCREEN</div>
+        <div class="screen"></div>
+    </div>
+
+    <div class="compact-seats-grid">
+        @for (int row = 1; row <= 5; row++)
+        {
+            <div class="seat-row">
+                <div class="row-number">Row @row</div>
+                <div class="seats-in-row">
+                    @for (int seat = 1; seat <= 10; seat++)
+                    {
+                        var ticket = Model.Tickets.FirstOrDefault(t => t.RowNumber == row && t.SeatNumber == seat);
+                        var seatClass = ticket?.IsBooked == true ? "booked" : "available";
+                        var seatTypeClass = ticket?.SeatType == SeatType.Premium ? "premium" : "";
+
+                        <div class="compact-seat @seatClass @seatTypeClass"
+                             data-row="@row"
+                             data-seat="@seat"
+                             data-timing-id="@Model.Id">
+                            <span class="seat-number">@seat</span>
+                            @if (ticket?.SeatType == SeatType.Premium)
+                            {
+                                <span class="premium-badge">★</span>
+                            }
+                        </div>
+                    }
+                </div>
+            </div>
+        }
+    </div>
+
+    <div class="controls-section">
+        <div class="legend">
+            <div class="legend-item">
+                <div class="legend-color available"></div>
+                <span>Available</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color booked"></div>
+                <span>Booked</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color premium"></div>
+                <span>Premium</span>
+            </div>
+        </div>
+
+        <div class="selection-info">
+            <div class="selected-count">Selected: <span id="selected-seats-count">0</span></div>
+            <div class="total-price">Total: $<span id="total-price">0.00</span></div>
+            <button class="confirm-btn" id="confirm-selection" disabled>
+                Confirm Selection
+            </button>
+        </div>
+    </div>
+</div>
+
+<style>
+    :root {
+        --primary-color: #e50914;
+        --secondary-color: #221f1f;
+        --accent-color: #f5f5f1;
+        --dark-bg: #141414;
+        --light-bg: #ffffff;
+        --text-primary: #f5f5f1;
+        --text-secondary: #808080;
+        --card-bg: #181818;
+        --seat-available: #4CAF50;
+        --seat-booked: #e50914;
+        --seat-premium: #FFC107;
+        --seat-selected: #2196F3;
+        --screen-color: #616161;
+    }
+
+    [data-bs-theme="light"] {
+        --secondary-color: #f8f9fa;
+        --accent-color: #212529;
+        --dark-bg: #ffffff;
+        --light-bg: #f5f5f5;
+        --text-primary: #221f1f;
+        --text-secondary: #555555;
+        --card-bg: #ffffff;
+        --screen-color: #bdbdbd;
+    }
+
+    .seat-selection-container {
+        max-width: 600px;
+        margin: 2rem auto;
+        padding: 1.5rem;
+        background-color: var(--card-bg);
+        border-radius: 10px;
+        color: var(--text-primary);
+        box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    }
+
+    .header-section {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1.5rem;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid var(--secondary-color);
+    }
+
+    .timing-info {
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+    }
+
+    .start-time {
+        font-size: 1.1rem;
+        font-weight: bold;
+    }
+
+    .price {
+        background-color: var(--primary-color);
+        color: white;
+        padding: 0.2rem 0.8rem;
+        border-radius: 20px;
+        font-size: 0.9rem;
+    }
+
+    .screen-container {
+        margin-bottom: 1.5rem;
+        text-align: center;
+    }
+
+    .screen-label {
+        font-size: 0.9rem;
+        color: var(--text-secondary);
+        margin-bottom: 0.3rem;
+    }
+
+    .screen {
+        height: 15px;
+        background: linear-gradient(to right, transparent, var(--screen-color), transparent);
+        border-radius: 0 0 8px 8px;
+        margin: 0 auto;
+        width: 90%;
+    }
+
+    .compact-seats-grid {
+        display: flex;
+        flex-direction: column;
+        gap: 0.8rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .seat-row {
+        display: flex;
+        gap: 0.8rem;
+        align-items: center;
+    }
+
+    .row-number {
+        width: 45px;
+        font-size: 0.8rem;
+        font-weight: bold;
+        color: var(--text-secondary);
+    }
+
+    .seats-in-row {
+        display: flex;
+        gap: 0.4rem;
+        flex-wrap: wrap;
+    }
+
+    .compact-seat {
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 3px;
+        cursor: pointer;
+        font-size: 0.7rem;
+        font-weight: bold;
+        transition: all 0.15s;
+        position: relative;
+    }
+
+        .compact-seat .seat-number {
+            position: relative;
+            z-index: 1;
+        }
+
+        .compact-seat.available {
+            background-color: var(--seat-available);
+            color: white;
+        }
+
+        .compact-seat.booked {
+            background-color: var(--seat-booked);
+            color: white;
+            cursor: not-allowed;
+        }
+
+        .compact-seat.premium .premium-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            font-size: 0.6rem;
+            color: var(--seat-premium);
+            text-shadow: 0 0 2px rgba(0,0,0,0.5);
+        }
+
+        .compact-seat.selected {
+            background-color: var(--seat-selected);
+            transform: scale(1.1);
+            box-shadow: 0 0 5px rgba(33,150,243,0.5);
+        }
+
+    .controls-section {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-top: 1rem;
+        border-top: 1px solid var(--secondary-color);
+    }
+
+    .legend {
+        display: flex;
+        gap: 1rem;
+    }
+
+    .legend-item {
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+        font-size: 0.8rem;
+    }
+
+    .legend-color {
+        width: 14px;
+        height: 14px;
+        border-radius: 2px;
+    }
+
+        .legend-color.available {
+            background-color: var(--seat-available);
+        }
+
+        .legend-color.booked {
+            background-color: var(--seat-booked);
+        }
+
+        .legend-color.premium {
+            background-color: var(--seat-premium);
+        }
+
+    .selection-info {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .selected-count, .total-price {
+        font-size: 0.9rem;
+    }
+
+    .confirm-btn {
+        background-color: var(--primary-color);
+        color: white;
+        border: none;
+        padding: 0.5rem 1.2rem;
+        border-radius: 4px;
+        font-size: 0.9rem;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+
+        .confirm-btn:hover {
+            background-color: #f40612;
+            transform: scale(1.03);
+        }
+
+        .confirm-btn:disabled {
+            background-color: var(--secondary-color);
+            cursor: not-allowed;
+            opacity: 0.6;
+            transform: none;
+        }
+
+
+    .controls-section {
+        flex-direction: column;
+        gap: 1rem;
+        align-items: flex-start;
+    }
+
+    .legend {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const seats = document.querySelectorAll('.compact-seat.available');
+        const selectedCount = document.getElementById('selected-seats-count');
+        const totalPrice = document.getElementById('total-price');
+        const confirmBtn = document.getElementById('confirm-selection');
+        const pricePerSeat = @Model.Price;
+        const premiumMultiplier = 1.5; // Premium seats cost 50% more
+
+        let selectedSeats = [];
+
+        seats.forEach(seat => {
+            seat.addEventListener('click', function() {
+                const row = this.getAttribute('data-row');
+                const seatNum = this.getAttribute('data-seat');
+                const isPremium = this.classList.contains('premium');
+                const seatId = `R${row}S${seatNum}`;
+
+                if (this.classList.contains('selected')) {
+                    // Deselect seat
+                    this.classList.remove('selected');
+                    selectedSeats = selectedSeats.filter(s => s.id !== seatId);
+                } else {
+                    // Select seat
+                    this.classList.add('selected');
+                    selectedSeats.push({
+                        id: seatId,
+                        isPremium: isPremium,
+                        price: isPremium ? pricePerSeat * premiumMultiplier : pricePerSeat
+                    });
+                }
+
+                // Update UI
+                updateSelectionSummary();
+            });
+        });
+
+        function updateSelectionSummary() {
+            selectedCount.textContent = selectedSeats.length;
+
+            const total = selectedSeats.reduce((sum, seat) => sum + seat.price, 0);
+            totalPrice.textContent = total.toFixed(2);
+
+            confirmBtn.disabled = selectedSeats.length === 0;
+        }
+
+        confirmBtn.addEventListener('click', function() {
+            const timingId = document.querySelector('.compact-seat').getAttribute('data-timing-id');
+            const seatList = selectedSeats.map(s => `${s.id} (${s.isPremium ? 'Premium' : 'Regular'})`).join(', ');
+            const total = selectedSeats.reduce((sum, seat) => sum + seat.price, 0);
+
+            alert(`Confirm booking for:\n\nTiming: ${timingId}\nSeats: ${seatList}\nTotal: $${total.toFixed(2)}`);
+
+            // Reset selection
+            document.querySelectorAll('.compact-seat.selected').forEach(s => s.classList.remove('selected'));
+            selectedSeats = [];
+            updateSelectionSummary();
+        });
+    });
+</script>

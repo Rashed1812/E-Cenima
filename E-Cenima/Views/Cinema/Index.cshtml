@@ -1,7 +1,591 @@
 ﻿@model ICollection<CinemaDTO>
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Our Cinemas";
 }
 
-<h1>Index</h1>
+<div class="cinema-listing">
+    <!-- Hero Section -->
+    <div class="cinema-hero">
+        <div class="hero-content">
+            <h1 class="hero-title">Discover Our Cinemas</h1>
+            <p class="hero-subtitle">Experience movies like never before</p>
+        </div>
+    </div>
 
+    <!-- Featured Cinema -->
+    <div class="container featured-cinema">
+        <h2 class="section-title"><span>Featured Cinema</span></h2>
+        @{
+            var bestCinema = Model.FirstOrDefault();
+            if (bestCinema != null)
+            {
+                <div class="featured-card">
+                    <div class="featured-media">
+                        @if (!string.IsNullOrEmpty(bestCinema.Logo))
+                        {
+                            <img src="/@bestCinema.Logo" alt="@bestCinema.Name logo" class="featured-logo">
+                        }
+                        <div class="premium-badge">Premium</div>
+                    </div>
+                    <div class="featured-content">
+                        <div class="featured-header">
+                            <div class="cinema-info">
+                                <h3>@bestCinema.Name</h3>
+                                <p class="cinema-location"><i class="fas fa-map-marker-alt"></i> @bestCinema.Address</p>
+                            </div>
+                            <div class="showtime-count">
+                                <span>@(bestCinema.Showtimes?.Count ?? 0)</span>
+                                <span>showtimes</span>
+                            </div>
+                        </div>
+
+                        @if (bestCinema.Showtimes?.Any() == true)
+                        {
+                            <div class="now-showing">
+                                <h4>Now Showing:</h4>
+                                <div class="movies-scroll">
+                                    @foreach (var showtime in bestCinema.Showtimes.Take(5))
+                                    {
+                                        <div class="movie-poster">
+                                            @if (!string.IsNullOrEmpty(showtime.Movie?.ImageURL))
+                                            {
+                                                <img src="/@showtime.Movie.ImageURL" alt="@showtime.Movie.Name">
+                                            }
+                                            <div class="movie-info">
+                                                <span class="movie-title">@showtime.Movie?.Name</span>
+                                                <span class="showtime">@showtime.Date.ToString("hh:mm tt")</span>
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        }
+
+                        <div class="actions">
+                            <a href="#" class="btn btn-primary">View All Showtimes</a>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+    </div>
+    <!-- All Cinemas Grid -->
+    <div class="container cinemas-grid">
+        <h2 class="section-title"><span>All Cinemas</span></h2>
+
+        <div class="grid">
+            @foreach (var cinema in Model)
+            {
+                <div class="cinema-card">
+                    <div class="poster">
+                        @if (!string.IsNullOrEmpty(cinema.Logo))
+                        {
+                            <img src="/@cinema.Logo" alt="@cinema.Name logo" class="poster-image">
+                        }
+                        else
+                        {
+                            <div class="poster-placeholder">
+                                <i class="fas fa-film"></i>
+                            </div>
+                        }
+                        <div class="showtimes">
+                            <span>@(cinema.Showtimes?.Count ?? 0) showtimes</span>
+                        </div>
+                    </div>
+
+                    <div class="cinema-details">
+                        <h3 class="name">@cinema.Name</h3>
+                        <p class="address">
+                            <i class="fas fa-map-marker-alt"></i> @cinema.Address
+                        </p>
+                       
+
+                        @if (cinema.Showtimes?.Any() == true)
+                        {
+                            <div class="featured-movies">
+                                <h4>Featured Movies:</h4>
+                                <div class="movie-tags">
+                                    @foreach (var showtime in cinema.Showtimes.Take(3).GroupBy(s => s.Movie_Id).Select(g => g.First()))
+                                    {
+                                        <span class="movie-tag">@showtime.Movie?.Name</span>
+                                    }
+                                </div>
+                            </div>
+                        }
+
+                        <div class="card-actions">
+                            <a href="@Url.Action("Index", "Showtimes", new { cinemaId = cinema.Id })" class="btn btn-primary">
+                                <i class="fas fa-ticket-alt"></i> Showtimes
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Base Styles */
+    .cinema-listing {
+        background-color: var(--dark-bg);
+        color: var(--text-primary);
+        padding-bottom: 3rem;
+    }
+
+    /* Hero Section */
+    .cinema-hero {
+        background: url('https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+        background-size: cover;
+        background-position: center;
+        height: 400px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        margin-bottom: 3rem;
+    }
+
+    .hero-content {
+        max-width: 800px;
+        padding: 2rem;
+    }
+
+    .hero-title {
+        font-size: 3.5rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        color: white;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    }
+
+    .hero-subtitle {
+        font-size: 1.5rem;
+        color: white;
+    }
+
+    /* Section Titles */
+    .section-title {
+        text-align: center;
+        margin: 3rem 0;
+        position: relative;
+        font-size: 2rem;
+        color: var(--accent-color);
+    }
+
+        .section-title span {
+            background-color: var(--dark-bg);
+            padding: 0 1.5rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .section-title:after {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background-color: var(--primary-color);
+            z-index: 0;
+        }
+
+    /* Featured Cinema */
+    .featured-cinema {
+        max-width: 1200px;
+        margin: 0 auto 4rem;
+    }
+
+    .featured-card {
+        display: flex;
+        background-color: var(--card-bg);
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        gap: 2rem;
+    }
+
+    .featured-media {
+        flex: 0 0 200px;
+        position: relative;
+        background-color: #000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 1.5rem;
+    }
+
+    .featured-logo {
+        max-width: 100%;
+        max-height: 150px;
+        object-fit: contain;
+    }
+
+    .premium-badge {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        background-color: var(--primary-color);
+        color: white;
+        padding: 0.4rem 0.8rem;
+        border-radius: 20px;
+        font-weight: bold;
+        font-size: 0.8rem;
+    }
+
+    .featured-content {
+        flex: 1;
+        padding: 1.5rem 1.5rem 1.5rem 0;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .featured-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 1.5rem;
+    }
+
+    .cinema-info h3 {
+        font-size: 1.5rem;
+        margin-bottom: 0.5rem;
+        color: var(--accent-color);
+    }
+
+    .cinema-location {
+        color: var(--text-secondary);
+        font-size: 0.9rem;
+    }
+
+    .showtime-count {
+        text-align: center;
+        background-color: var(--secondary-color);
+        padding: 0.5rem 0.8rem;
+        border-radius: 8px;
+    }
+
+        .showtime-count span:first-child {
+            display: block;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        .showtime-count span:last-child {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+    .now-showing {
+        flex-grow: 1;
+        margin: 1rem 0;
+    }
+
+        .now-showing h4 {
+            margin-bottom: 1rem;
+            color: var(--accent-color);
+            font-size: 1.1rem;
+        }
+
+    .movies-scroll {
+        display: flex;
+        gap: 1rem;
+        overflow-x: auto;
+        padding-bottom: 1rem;
+    }
+
+    .movie-poster {
+        flex: 0 0 120px;
+        position: relative;
+        border-radius: 5px;
+        overflow: hidden;
+        height: 180px;
+        background-color: #000;
+    }
+
+        .movie-poster img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+    .movie-info {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+        padding: 0.5rem;
+    }
+
+    .movie-title {
+        display: block;
+        font-size: 1.2rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        color: white;
+        margin-bottom:10px;
+    }
+
+    .showtime {
+        font-size: 1rem;
+        color: white;
+        background-color: var(--primary-color);
+        padding:.5rem;
+        border-radius: 20px;
+    }
+
+    .actions {
+        margin-top: auto;
+    }
+
+  
+
+    .featured-media {
+        flex: 0 0 auto;
+        height: 150px;
+        padding: 1rem;
+    }
+
+    .featured-content {
+        padding: 1.5rem;
+    }
+
+    .movie-poster {
+     height: 160px;
+    }
+
+   
+
+
+    .movie-poster {
+        flex: 0 0 130px;
+        height: auto;
+    }
+
+   .movie-poster
+
+    /* Cinema Grid */
+    .cinemas-grid {
+        max-width: 1200px;
+        margin: 0 auto 4rem;
+    }
+
+    .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 25px;
+        padding: 20px;
+    }
+
+    .cinema-card {
+        background-color: var(--card-bg);
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+        .cinema-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+
+    /* Poster Section */
+    .poster {
+        position: relative;
+        height: 200px;
+        background-color: #000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+    }
+
+    .poster-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.5s ease;
+    }
+
+    .cinema-card:hover .poster-image {
+        transform: scale(1.05);
+    }
+
+    .poster-placeholder {
+        color: var(--text-secondary);
+        font-size: 3rem;
+        opacity: 0.3;
+    }
+
+    .showtimes {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+        padding: 10px;
+        text-align: right;
+    }
+
+        .showtimes span {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+    /* Cinema Details */
+    .cinema-details {
+        padding: 1.5rem;
+    }
+
+    .name {
+        font-size: 1.2rem;
+        margin-bottom: 0.5rem;
+        color: var(--accent-color);
+    }
+
+    .address, .capacity {
+        color: var(--text-secondary);
+        font-size: 0.9rem;
+        margin-bottom: 0.5rem;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+        .capacity i {
+            color: var(--primary-color);
+        }
+
+    .featured-movies {
+        margin: 1rem 0;
+    }
+
+        .featured-movies h4 {
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+            color: var(--accent-color);
+        }
+
+    .movie-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+
+    .movie-tag {
+        background-color: var(--secondary-color);
+        color: var(--text-primary);
+        padding: 0.3rem 0.6rem;
+        border-radius: 15px;
+        font-size: 0.75rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 100px;
+    }
+
+    /* Buttons */
+    .btn {
+        text-align: center;
+        padding: 8px 12px;
+        border-radius: 5px;
+        font-size: 0.85rem;
+        text-decoration: none;
+        transition: all 0.2s ease;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 5px;
+        cursor: pointer;
+    }
+
+    .btn-primary {
+        background-color: var(--primary-color);
+        color: white;
+        border: 1px solid var(--primary-color);
+    }
+
+        .btn-primary:hover {
+            background-color: #c40812;
+            border: 1px solid var(--primary-color);
+        }
+
+    .btn-outline {
+        background-color: transparent;
+        color: var(--primary-color);
+        border: 1px solid var(--primary-color);
+    }
+
+        .btn-outline:hover {
+            background-color: rgba(229, 9, 20, 0.1);
+        }
+
+    .card-actions {
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+        margin-top: 1rem;
+    }
+
+    .featured-card,
+    .cinema-card {
+        background-color: var(--card-bg);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .address, .capacity {
+        color: var(--text-secondary);
+    
+
+    }
+
+  
+    .featured-media {
+        height: 200px;
+    }
+
+    .hero-title {
+        font-size: 2.5rem;
+    }
+
+    .grid {
+        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+        gap: 15px;
+    }
+
+    .poster {
+        height: 180px;
+    }
+
+    }
+
+
+
+    .hero-title {
+        font-size: 2rem;
+    }
+
+    .hero-subtitle {
+        font-size: 1.2rem;
+    }
+
+    .movies-scroll {
+        gap: 0.5rem;
+    }
+
+    .movie-poster {
+        flex: 1 0 100px;
+        height: auto;
+    }
+
+    
+</style>

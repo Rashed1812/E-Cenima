@@ -1,6 +1,9 @@
-﻿using BLL.DTO.Movie;
+﻿using BLL.DTO.Cinema;
+using BLL.DTO.Movie;
 using BLL.Factory.MovieFactory;
+using DAL.Data.Models;
 using DAL.Data.Models.Movie_Module;
+using DAL.Data.Repositories.Calsses;
 using DAL.Data.Repositories.Intrfaces;
 using System;
 using System.Collections.Generic;
@@ -48,9 +51,35 @@ namespace BLL.Services.Movies
             throw new NotImplementedException();
         }
 
-        public Task<ICollection<MovieDto>> GetMoviesWithShowtimesAsync()
+        public async Task<MovieWithShowTime> GetMoviesWithShowtimesAsync(int MovieId)
         {
-            throw new NotImplementedException();
+            var movies = await _movieRepo.GetMoviesWithShowtimesAsync(MovieId);
+
+            var movieWithShowItems = new MovieWithShowTime
+            {
+                Movie = new MovieDto
+                {
+                    Id = movies.Id,
+                    Description = movies.Description,
+                    ImageURL = movies.ImageURL,
+                    Name = movies.Name,
+                    MovieCategory = movies.MovieCategory,
+                    ReleaseDate = movies.ReleaseDate,
+                    TrailerURL = movies.TrailerURL,
+                }
+                ,
+                CinmaWithTimes = movies.Showtimes.Select(s => new CinmaWithTimes
+                {
+                    Id = s.Cinema.Id,
+                    Address = s.Cinema.Address,
+                    Capacity = s.Cinema.Capacity,
+                    Logo = s.Cinema.Logo,
+                    Name = s.Cinema.Name,
+                    Date = s.Date,
+                    timing = s.Timings
+                }).ToList()
+            };
+            return movieWithShowItems;
         }
 
         public Task<MovieDto> UpdateAsync(int id, UpdateMovieDTO updateMovieDTO)

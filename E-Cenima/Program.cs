@@ -1,6 +1,7 @@
 using BLL.Services.ActorService;
 using BLL.Services.CinemaService;
 using BLL.Services.Movies;
+using BLL.Services.TimingService;
 using DAL.Data;
 using DAL.Data.Repositories.Calsses;
 using DAL.Data.Repositories.GenericRepositories;
@@ -29,6 +30,9 @@ namespace E_Cenima
             builder.Services.AddScoped<ICenimaService, CinemaService>();
             builder.Services.AddScoped<IActorRepo, ActorRepo>();
             builder.Services.AddScoped<IActorService, ActorService>();
+            builder.Services.AddScoped<ITimeRepo, TimeRepo>();
+            builder.Services.AddScoped<ITimeService, TimeService>();
+
 
             var app = builder.Build();
 

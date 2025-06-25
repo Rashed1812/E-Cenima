@@ -23,5 +23,10 @@ namespace BLL.Services.CinemaService
             return cinema?.MapToDetailsDto();
         }
 
+        public async Task<ICollection<CinemaDTO>> GetCinemasWithTimes()
+        {
+            var cinema = await _cinemaRepo.GetAllWiithTime();
+            return cinema.Select(c => c.MapToDto()).ToList();
+        }
     }
 }

@@ -12,5 +12,6 @@ namespace BLL.Services.CinemaService
         Task<ICollection<CinemaDTO>> GetAllCinemas();
         Task<CinemaDetailsDTO> GetCinemaById(int id);
 
+        Task<ICollection<CinemaDTO>> GetCinemasWithTimes();
     }
 }

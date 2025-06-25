@@ -36,5 +36,11 @@ namespace E_Cenima.Controllers
             };
             return View(moviesbyActor);
         }
+        public async Task<IActionResult> MoviesWithTime(int Id)
+        {
+            var MovieWithTime = await _movieService.GetMoviesWithShowtimesAsync(Id);
+            //Console.WriteLine(MovieWithTime) ;
+            return View(MovieWithTime);
+        }
     }
 }

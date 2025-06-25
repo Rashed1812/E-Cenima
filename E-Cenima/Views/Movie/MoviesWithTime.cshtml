@@ -1,0 +1,359 @@
+﻿@model MovieWithShowTime
+@{
+    ViewData["Title"] = "MoviesWithTime";
+}
+
+<div class="movie-details-container" data-bs-theme="dark">
+    <!-- Hero Section -->
+    <div class="movie-hero">
+        <div class="hero-container">
+            <!-- Left Column: Trailer and Poster -->
+            <div class="media-column">
+                
+                <div class="poster-container">
+                    <img src="/@Model.Movie.ImageURL" alt="@Model.Movie.Name Poster" class="movie-poster">
+                  
+                </div>
+            </div>
+
+            <!-- Right Column: Movie Info -->
+            <div class="movie-info-container">
+                <h1 class="movie-title">@Model.Movie.Name</h1>
+                <div class="movie-meta">
+                    <span class="year">@Model.Movie.ReleaseDate.Year</span>
+                    <span class="category">@Model.Movie.MovieCategory</span>
+                </div>
+                <p class="movie-description">@Model.Movie.Description</p>
+                
+                <div class="trailer-container">
+                    <iframe src="https://www.youtube.com/embed/@Model.Movie.TrailerURL"
+                            frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowfullscreen></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Showtimes Section -->
+    <section class="showtimes-section">
+        <div class="section-header">
+            <h2><i class="fas fa-ticket-alt"></i> Available Showtimes</h2>
+        </div>
+
+        <div class="cinemas-container">
+            @foreach (var cinema in Model.CinmaWithTimes)
+            {   
+                <div class="cinema-card">
+                    <div class="cinema-info">
+                        <h3 class="cinema-name">@cinema.Name</h3>
+                        <p class="cinema-address"><i class="fas fa-map-marker-alt"></i> @cinema.Address</p>
+                    </div>
+
+                    <div class="showtime-date">
+                        <h4><i class="far fa-calendar-alt"></i> @cinema.Date.ToString("dddd, MMMM dd")</h4>
+                    </div>
+
+                    <div class="time-slots">
+                        @foreach (var timing in cinema.timing)
+                        {
+                            <a asp-controller="Time" asp-action="ShowTicket" asp-route-Id="@timing.Id" class="time-slot">
+                                <span class="time">@timing.StartTime.ToString(@"hh\:mm")</span>
+                                <span class="price">$@timing.Price</span>
+                            </a>
+                        }
+                    </div>
+                </div>
+            }
+        </div>
+    </section>
+</div>
+
+<style>
+
+
+    .movie-hero {
+        padding: 3rem 5%;
+        background: linear-gradient(to right, var(--dark-bg) 20%, transparent 100%);
+    }
+
+    .hero-container {
+        display: flex;
+        gap: 3rem;
+        max-width: 1400px;
+        margin: 0 auto;
+        align-items: stretch; /* Make columns equal height */
+    }
+
+    .media-column {
+        flex: 1;
+        min-width: 0;
+        display: flex;
+        align-items: center; /* Center poster vertically */
+    }
+
+    .poster-container {
+        width: 100%;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+        aspect-ratio: 2/3; /* Standard poster aspect ratio */
+        max-height: 500px; /* Limit maximum height */
+        object-fit: contain;
+    }
+
+    .movie-poster {
+        width: 100%;
+        height: 100%;
+        display: block;
+    }
+
+    .movie-info-container {
+        flex: 1;
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .movie-title {
+        font-size: 2.5rem;
+        margin: 0 0 1rem;
+        color: var(--text-primary);
+        line-height: 1.2;
+    }
+
+    .movie-meta {
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+        margin-bottom: 1.5rem;
+        color: var(--text-primary);
+        font-size: 1.1rem;
+    }
+
+   
+
+    .movie-description {
+        font-size: 1.1rem;
+        line-height: 1.6;
+        margin-bottom: 2rem;
+        color: var(--text-primary);
+        max-width: 600px;
+    }
+
+    .trailer-container {
+        position: relative;
+        width: 100%;
+        height:100%;
+        margin-top: 2rem;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+    }
+
+        .trailer-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+ 
+
+    .poster-container {
+        max-width: 400px;
+        margin: 0 auto;
+    }
+
+    .trailer-container {
+        margin-top: 1.5rem;
+    }
+
+    }
+
+
+    .poster-container {
+        max-width: 100%;
+    }
+
+    }
+    /* Showtimes Section */
+    .showtimes-section {
+        padding: 3rem 5%;
+    }
+
+   
+
+    .section-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 2rem;
+        max-width: 1400px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+        .section-header h2 {
+            font-size: 1.8rem;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+    /* Cinemas Cards */
+    .cinemas-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+        gap: 2rem;
+        max-width: 1400px;
+        margin: 0 auto;
+    }
+
+    .cinema-card {
+        background: var(--card-bg);
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        transition: transform 0.3s;
+        border: 1px solid rgba(255,255,255,0.1);
+    }
+
+    
+
+    .cinema-card:hover {
+        transform: translateY(-5px);
+    }
+
+    .cinema-info {
+        padding: 1.5rem;
+        border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+
+  
+    .cinema-name {
+        margin: 0 0 0.5rem;
+        font-size: 1.4rem;
+        color: var(--text-primary);
+    }
+
+    .cinema-address {
+        margin: 0;
+        color: var(--text-secondary);
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .showtime-date {
+        padding: 1rem 1.5rem;
+        background-color: rgba(255,255,255,0.05);
+    }
+
+   
+
+    .showtime-date h4 {
+        margin: 0;
+        font-size: 1.1rem;
+        color: var(--text-primary);
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .time-slots {
+        padding: 1.5rem;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.8rem;
+    }
+
+    .time-slot {
+        padding: 0.8rem 1.2rem;
+        border-radius: 4px;
+        background-color: var(--secondary-color);
+        color: var(--text-primary);
+        text-decoration: none;
+        font-weight: 500;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        transition: all 0.2s;
+        border: 1px solid rgba(255,255,255,0.1);
+    }
+
+    [data-bs-theme="light"] .time-slot {
+        color: var(--text-primary);
+        border: 1px solid rgba(0,0,0,0.1);
+    }
+
+    .time-slot:hover {
+        background-color: var(--primary-color);
+        color: white;
+        transform: scale(1.05);
+    }
+
+    .time {
+        font-size: 1.1rem;
+    }
+
+    .price {
+        font-size: 0.9rem;
+        opacity: 0.8;
+    }
+
+    /* Theme Toggle */
+    .theme-btn {
+        background-color: var(--primary-color);
+        color: white;
+        border: none;
+        padding: 0.6rem 1.2rem;
+        border-radius: 50px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        transition: all 0.3s;
+    }
+
+        .theme-btn:hover {
+            background-color: #f40612;
+        }
+
+  
+
+    .trailer-container iframe {
+        height: 350px;
+    }
+
+    }
+
+   
+
+    .cinemas-container {
+        grid-template-columns: 1fr;
+    }
+
+    .section-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+
+    .trailer-container iframe {
+        height: 250px;
+    }
+
+    }
+</style>
+
+
+<script>
+   
+    function playTrailer(url) {
+        window.open('https://www.youtube.com/watch?v=' + url, '_blank');
+    }
+</script>

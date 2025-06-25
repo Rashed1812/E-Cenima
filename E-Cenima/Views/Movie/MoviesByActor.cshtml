@@ -22,7 +22,6 @@
     <div class="movies-grid">
         @foreach (var movie in Model.Movies)
         {
-          
             <div class="movie-card">
                 <img src="/@movie.ImageURL" alt="@movie.Name" class="movie-poster">
                 <div class="movie-details">
@@ -31,7 +30,7 @@
                         <span>@movie.ReleaseDate.ToString("yyyy")</span>
                         <span class="movie-category">@movie.MovieCategory</span>
                     </div>
-                    <a href="@Url.Action("Book", "Movies", new { id = movie.Id })" class="book-button">Book Now</a>
+                    <a asp-action="MoviesWithTime" asp-controller="Movie" asp-route-Id="@movie.Id" class="book-button">Book Now</a>
                 </div>
             </div>
         }
