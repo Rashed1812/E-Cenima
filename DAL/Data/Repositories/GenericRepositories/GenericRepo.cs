@@ -39,14 +39,18 @@ namespace DAL.Data.Repositories.GenericRepositories
            return await context.Set<T>().Skip(pageSize*(pageNumber-1)).Take(pageSize).ToListAsync();
         }
 
-        public  void Remove(T item)
+        public  async Task Remove(T item)
         {
-           context.Set<T>().Remove(item);
+            context.Set<T>().Remove(item);
+            await context.SaveChangesAsync();
+
         }
 
-        public void Update(T item)
+        public async Task Update(T item)
         {
             context.Set<T>().Update(item);
+            await context.SaveChangesAsync();
+
         }
     }
 }

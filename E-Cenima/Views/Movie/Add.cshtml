@@ -1,0 +1,299 @@
+﻿@using DAL.Data.Models.Movie_Module
+@model MovieAddDto
+
+@{
+    ViewData["Title"] = "Add";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<link href="/css/movie.css" rel="stylesheet" />
+
+<div class="row justify-content-center">
+    <div class="col-md-10">
+        <div class="movie-form-container">
+            <div class="d-flex align-items-center mb-4">
+                <a asp-controller="Movie" asp-action="AdminIndex" class="btn btn-outline-secondary me-3">
+                    <i class="fas fa-arrow-left"></i>
+                </a>
+                <h1 class="movie-title mb-0">Add New Movie</h1>
+            </div>
+
+            <form asp-controller="Movie" asp-action="Add" method="post" enctype="multipart/form-data" class="movie-form">
+                <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                <div class="row">
+                    <!-- Left Column - Basic Information -->
+                    <div class="col-md-8">
+                        <div class="form-section">
+                            <h5 class="section-title">
+                                <i class="fas fa-info-circle me-2"></i>Basic Information
+                            </h5>
+
+                            <div class="form-group mb-3">
+                                <label asp-for="Name" class="form-label">
+                                    <i class="fas fa-film me-2"></i>Movie Name *
+                                </label>
+                                <input asp-for="Name" class="form-control" placeholder="Enter movie name" />
+                                <span asp-validation-for="Name" class="text-danger"></span>
+                            </div>
+
+                            <div class="form-group mb-3">
+                                <label asp-for="Description" class="form-label">
+                                    <i class="fas fa-align-left me-2"></i>Description *
+                                </label>
+                                <textarea asp-for="Description" class="form-control" rows="4"
+                                          placeholder="Enter movie description" maxlength="1000"></textarea>
+                                <span asp-validation-for="Description" class="text-danger"></span>
+                                <div class="form-text">
+                                    <span id="descriptionCount">0</span>/1000 characters
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group mb-3">
+                                        <label asp-for="ReleaseDate" class="form-label">
+                                            <i class="fas fa-calendar me-2"></i>Release Date *
+                                        </label>
+                                        <input id="ReleaseDate" asp-for="ReleaseDate" class="form-control text-black" type="date" />
+                                        <span asp-validation-for="ReleaseDate" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group mb-3">
+                                        <label asp-for="MovieCategory" class="form-label ">
+                                            <i class="fas fa-tag me-2"></i>Category *
+                                        </label>
+                                        <select asp-for="MovieCategory" class="form-select text-black" asp-items="Html.GetEnumSelectList<Category>()">
+                                            <option value="">Select a category</option>
+                                        </select>
+                                        <span asp-validation-for="MovieCategory" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                          
+
+                            <div class="form-group mb-3">
+                                <label asp-for="TrailerURL" class="form-label">
+                                    <i class="fas fa-play me-2"></i>Trailer URL
+                                </label>
+                                <input asp-for="TrailerURL" class="form-control" placeholder="Enter trailer URL (optional)" />
+                                <span asp-validation-for="TrailerURL" class="text-danger"></span>
+                                <div class="form-text">YouTube, Vimeo, or any video URL</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right Column - Image Upload -->
+                    <div class="col-md-4">
+                        <div class="form-section">
+                            <h5 class="section-title">
+                                <i class="fas fa-image me-2"></i>Movie Image
+                            </h5>
+
+                            <div class="image-upload-container">
+                                <div class="image-preview" id="imagePreview">
+                                    <div class="image-placeholder">
+                                        <i class="fas fa-image fa-3x text-muted"></i>
+                                        <p class="text-muted mt-2">No image selected</p>
+                                    </div>
+                                </div>
+
+                                <div class="form-group mt-3">
+                                    <label asp-for="ImageFile" class="form-label">
+                                        <i class="fas fa-upload me-2"></i>Upload Image *
+                                    </label>
+                                    <input asp-for="ImageFile" class="form-control" type="file"
+                                           accept="image/*" id="imageFileInput" />
+                                    <span asp-validation-for="ImageFile" class="text-danger"></span>
+                                    <div class="form-text">
+                                        Supported formats: JPG, PNG, GIF (Max: 5MB)
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                      
+                    </div>
+                </div>
+
+                <div class="form-actions mt-4 pt-3 border-top">
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save me-2"></i>Save Movie
+                        </button>
+                        <button type="button" class="btn btn-secondary" onclick="resetForm()">
+                            <i class="fas fa-undo me-2"></i>Reset Form
+                        </button>
+                        <a asp-action="Index" class="btn btn-outline-secondary">
+                            <i class="fas fa-times me-2"></i>Cancel
+                        </a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+              document.addEventListener('DOMContentLoaded', function() {
+          // Get today's date in YYYY-MM-DD format (required for date inputs)
+          const today = new Date().toISOString().split('T')[0];
+
+          // Set the input value
+          document.getElementById('ReleaseDate').value = today;
+        });
+        $(document).ready(function() {
+            // Character counter for description
+            $('#Description').on('input', function() {
+                const count = $(this).val().length;
+                $('#descriptionCount').text(count);
+
+                if (count > 900) {
+                    $('#descriptionCount').addClass('text-warning');
+                } else {
+                    $('#descriptionCount').removeClass('text-warning');
+                }
+            });
+
+            // Image preview functionality
+            $('#imageFileInput').on('change', function() {
+                const file = this.files[0];
+                if (file) {
+                    // Validate file size (5MB)
+                    if (file.size > 5 * 1024 * 1024) {
+                        alert('File size must be less than 5MB');
+                        $(this).val('');
+                        return;
+                    }
+
+                    // Validate file type
+                    if (!file.type.startsWith('image/')) {
+                        alert('Please select a valid image file');
+                        $(this).val('');
+                        return;
+                    }
+
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        $('#imagePreview').html(`
+                            <img src="${e.target.result}" alt="Preview" class="preview-image">
+                            <div class="image-info">
+                                <small class="text-muted">${file.name}</small><br>
+                                <small class="text-muted">${(file.size / 1024 / 1024).toFixed(2)} MB</small>
+                            </div>
+                        `);
+                    };
+                    reader.readAsDataURL(file);
+                } else {
+                    $('#imagePreview').html(`
+                        <div class="image-placeholder">
+                            <i class="fas fa-image fa-3x text-muted"></i>
+                            <p class="text-muted mt-2">No image selected</p>
+                        </div>
+                    `);
+                }
+            });
+
+            // Actor selection functionality
+            $('#actorSelect').on('change', function() {
+                updateSelectedActors();
+            });
+
+            function updateSelectedActors() {
+                const selectedOptions = $('#actorSelect option:selected');
+                const container = $('#selectedActors');
+
+                container.empty();
+
+                if (selectedOptions.length > 0) {
+                    container.append('<h6 class="mb-2">Selected Actors:</h6>');
+
+                    selectedOptions.each(function() {
+                        const actorId = $(this).val();
+                        const actorName = $(this).text();
+                        
+                        container.append(`
+                            <div class="selected-actor-item">
+                                <span class="actor-name">${actorName}</span>
+                                <button type="button" class="btn btn-sm btn-outline-danger remove-actor" data-actor-id="${actorId}">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                                <input type="hidden" name="SelectedActorIds" value="${actorId}" />
+                            </div>
+                        `);
+                    });
+                }
+            }
+
+            // Remove actor functionality
+            $(document).on('click', '.remove-actor', function() {
+                const actorId = $(this).data('actor-id');
+                $(`#actorSelect option[value="${actorId}"]`).prop('selected', false);
+                updateSelectedActors();
+            });
+
+            // Form validation enhancement
+            $('input, textarea, select').on('blur', function() {
+                $(this).removeClass('is-invalid is-valid');
+                if ($(this).val().trim() !== '' || $(this).is('[required]')) {
+                    const isValid = this.checkValidity();
+                    $(this).addClass(isValid ? 'is-valid' : 'is-invalid');
+                }
+            });
+
+            // Trailer URL validation
+            $('#TrailerURL').on('input', function() {
+                const url = $(this).val();
+                if (url && !isValidUrl(url)) {
+                    $(this).addClass('is-invalid');
+                    showFieldError(this, 'Please enter a valid URL');
+                } else {
+                    $(this).removeClass('is-invalid');
+                    removeFieldError(this);
+                }
+            });
+
+            function isValidUrl(string) {
+                try {
+                    new URL(string);
+                    return true;
+                } catch (_) {
+                    return false;
+                }
+            }
+
+            function showFieldError(field, message) {
+                removeFieldError(field);
+                $(field).after(`<div class="custom-error text-danger small mt-1">${message}</div>`);
+            }
+
+            function removeFieldError(field) {
+                $(field).siblings('.custom-error').remove();
+            }
+        });
+
+        function resetForm() {
+            if (confirm('Are you sure you want to reset the form? All entered data will be lost.')) {
+                document.querySelector('.movie-form').reset();
+                $('#imagePreview').html(`
+                    <div class="image-placeholder">
+                        <i class="fas fa-image fa-3x text-muted"></i>
+                        <p class="text-muted mt-2">No image selected</p>
+                    </div>
+                `);
+                $('#selectedActors').empty();
+                $('#descriptionCount').text('0');
+                $('.is-valid, .is-invalid').removeClass('is-valid is-invalid');
+                $('.custom-error').remove();
+            }
+        }
+     </script>
+}
+

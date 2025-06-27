@@ -1,6 +1,7 @@
 ﻿using BLL.DTO.Cinema;
 using BLL.DTO.Movie;
 using BLL.Factory.MovieFactory;
+using BLL.Services.FileService;
 using DAL.Data.Models;
 using DAL.Data.Models.Movie_Module;
 using DAL.Data.Repositories.Calsses;
@@ -13,18 +14,42 @@ using System.Threading.Tasks;
 
 namespace BLL.Services.Movies
 {
-    public class MovieService(IMovieRepo _movieRepo) : IMovieService
+    public class MovieService(IMovieRepo _movieRepo,IFileService _fileService) : IMovieService
     {
-        public async Task CreateAsync(CreateMovieDTO createMovieDTO)
+        public async Task CreateAsync(MovieAddDto createMovieDTO)
         {
-            var movie = MovieMapper.MapToCreateMovie(createMovieDTO);
-            await _movieRepo.AddAsync(movie);
+            try
+            {
+                var URL = await _fileService.UploadFileAsync(createMovieDTO.ImageFile, "Images/Movies");
+                var movie = new Movie
+                {
+                    Name = createMovieDTO.Name,
+                    Description = createMovieDTO.Description,
+                    MovieCategory = createMovieDTO.MovieCategory,
+                    TrailerURL = createMovieDTO.TrailerURL,
+                    ReleaseDate = createMovieDTO.ReleaseDate,
+                    ImageURL = URL,
+                };
+                await _movieRepo.AddAsync(movie);
+            }catch(Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+           
         }
 
         public Task<bool> DeleteAsync(int id)
         {
             throw new NotImplementedException();
         }
+
+        public async Task<ICollection<MovieAdminDto>> GetAllAdminAsync()
+        {
+            var Movies = await _movieRepo.GetAllMoviesWithActors();
+            var res = Movies.Select(x => MovieMapper.MapToAdminDto(x)).ToList();
+            return res;
+        }
+
 
         public async Task<ICollection<MovieDto>> GetAllAsync()
         {

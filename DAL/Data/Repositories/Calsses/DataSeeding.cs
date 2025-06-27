@@ -126,13 +126,7 @@ namespace DAL.Data.Repositories.Calsses
                         await _dbContext.MovieActors.AddRangeAsync(data);
                 }
 
-                if (!_dbContext.Set<Producer>().Any())
-                {
-                    var stream = File.OpenRead(@"..\DAL\Data\DataSeed\producers.json");
-                    var data = await JsonSerializer.DeserializeAsync<List<Producer>>(stream);
-                    if (data is not null && data.Any())
-                        await _dbContext.Producers.AddRangeAsync(data);
-                }
+              
 
                 if (!_dbContext.Set<ShowTime>().Any())
                 {
@@ -250,9 +244,7 @@ namespace DAL.Data.Repositories.Calsses
             if (!Enum.IsDefined(typeof(Category), movie.MovieCategory))
                 throw new ValidationException($"Invalid category '{movie.MovieCategory}' for {movie.Name}");
 
-            if (movie.ProducerId <= 0)
-                throw new ValidationException($"Invalid ProducerId for {movie.Name}");
-
+        
             if (string.IsNullOrWhiteSpace(movie.ImageURL))
                 throw new ValidationException($"ImageURL is required for {movie.Name}");
         }

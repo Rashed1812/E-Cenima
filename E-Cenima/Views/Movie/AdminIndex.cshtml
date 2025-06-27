@@ -1,0 +1,268 @@
+﻿@using DAL.Data.Models.Movie_Module
+@model ICollection<MovieAdminDto>
+@{
+    ViewData["Title"] = "AdminIndex";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<link href="~/css/movie.css" rel="stylesheet" />
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="movie-title">Movie Management System</h1>
+    <a asp-controller="movie" asp-action="Add" class="btn btn-primary">
+        <i class="fas fa-plus me-2"></i>Add New Movie
+    </a>
+</div>
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <i class="fas fa-check-circle me-2"></i>@TempData["SuccessMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <i class="fas fa-exclamation-circle me-2"></i>@TempData["ErrorMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+<div class="movie-filters mb-4">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="input-group">
+                <span class="input-group-text">
+                    <i class="fas fa-search"></i>
+                </span>
+                <input type="text" id="movieSearch" class="form-control" placeholder="Search movies by name...">
+            </div>
+        </div>
+        <div class="col-md-3">
+            <select id="categoryFilter" class="form-select">
+                <option value="">All Categories</option>
+                @foreach (var category in Enum.GetValues<Category>())
+                {
+                    <option value="@category">@category</option>
+                }
+            </select>
+        </div>
+        <div class="col-md-3">
+            <select id="yearFilter" class="form-select">
+                <option value="">All Years</option>
+                @for (int year = DateTime.Now.Year; year >= 1900; year--)
+                {
+                    <option value="@year">@year</option>
+                }
+            </select>
+        </div>
+        <div class="col-md-2">
+            <button id="clearFilters" class="btn btn-outline-secondary w-100">
+                <i class="fas fa-times me-1"></i>Clear
+            </button>
+        </div>
+    </div>
+</div>
+
+<div class="movie-grid-container">
+    @if (Model != null && Model.Any())
+    {
+        <div class="row" id="movieGrid">
+            @foreach (var movie in Model)
+            {
+                <div class="col-lg-3 col-md-6 col-sm-12 mb-4 movie-card-wrapper" 
+                     data-category="@movie.MovieCategory" 
+                     data-year="@movie.ReleaseDate.Year"
+                     data-name="@movie.Name.ToLower()">
+                    <div class="movie-card">
+                        <div class="movie-image-container">
+                            <img src="@movie.ImageURL" alt="@movie.Name" class="movie-image" 
+                                 onerror="this.src='https://via.placeholder.com/300x450/e50914/ffffff?text=No+Image'">
+                            <div class="movie-overlay">
+                                <div class="movie-actions">
+                                    <a asp-action="Details" asp-route-id="@movie.Id" class="btn btn-info btn-sm">
+                                        <i class="fas fa-eye"></i>
+                                    </a>
+                                    <a asp-controller="Movie" asp-action="Edit" asp-route-id="@movie.Id" class="btn btn-success btn-sm">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    <a asp-action="Delete" asp-route-id="@movie.Id" class="btn btn-danger btn-sm">
+                                        <i class="fas fa-trash"></i>
+                                    </a>
+                                </div>
+                                @if (!string.IsNullOrEmpty(movie.TrailerURL))
+                                {
+                                    <div class="trailer-button">
+                                        <a href="@movie.TrailerURL" target="_blank" class="btn btn-warning btn-sm">
+                                            <i class="fas fa-play me-1"></i>Trailer
+                                        </a>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                        <div class="movie-info">
+                            <h5 class="movie-name">@movie.Name</h5>
+                            <p class="movie-category">
+                                <i class="fas fa-tag me-1"></i>@movie.MovieCategory
+                            </p>
+                            <p class="movie-release-date">
+                                <i class="fas fa-calendar me-1"></i>@movie.ReleaseDate.ToString("MMM dd, yyyy")
+                            </p>
+                            
+                            <p class="movie-description">@(movie.Description.Length > 100 ? movie.Description.Substring(0, 100) + "..." : movie.Description)</p>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="empty-state text-center py-5">
+            <i class="fas fa-film fa-3x text-muted mb-3"></i>
+            <h5 class="text-muted">No movies found</h5>
+            <p class="text-muted">Get started by adding your first movie.</p>
+            <a asp-action="Create" class="btn btn-primary">
+                <i class="fas fa-plus me-2"></i>Add First Movie
+            </a>
+        </div>
+    }
+</div>
+
+<!-- Movie Statistics -->
+@if (Model != null && Model.Any())
+{
+    <div class="movie-stats mt-5">
+        <div class="row">
+            <div class="col-md-3">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-film"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>@Model.Count()</h3>
+                        <p>Total Movies</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-tags"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>@Model.Select(m => m.MovieCategory).Distinct().Count()</h3>
+                        <p>Categories</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                   
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-calendar"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>@Model.Where(m => m.ReleaseDate.Year == DateTime.Now.Year).Count()</h3>
+                        <p>This Year</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            // Auto-hide alerts after 5 seconds
+            setTimeout(function() {
+                $('.alert').fadeOut('slow');
+            }, 5000);
+
+            // Search functionality
+            $('#movieSearch').on('input', function() {
+                filterMovies();
+            });
+
+            // Category filter
+            $('#categoryFilter').on('change', function() {
+                filterMovies();
+            });
+
+            // Year filter
+            $('#yearFilter').on('change', function() {
+                filterMovies();
+            });
+
+            // Clear filters
+            $('#clearFilters').on('click', function() {
+                $('#movieSearch').val('');
+                $('#categoryFilter').val('');
+                $('#yearFilter').val('');
+                filterMovies();
+            });
+
+            function filterMovies() {
+                const searchTerm = $('#movieSearch').val().toLowerCase();
+                const selectedCategory = $('#categoryFilter').val();
+                const selectedYear = $('#yearFilter').val();
+
+                $('.movie-card-wrapper').each(function() {
+                    const movieName = $(this).data('name');
+                    const movieCategory = $(this).data('category');
+                    const movieYear = $(this).data('year').toString();
+
+                    const matchesSearch = !searchTerm || movieName.includes(searchTerm);
+                    const matchesCategory = !selectedCategory || movieCategory === selectedCategory;
+                    const matchesYear = !selectedYear || movieYear === selectedYear;
+
+                    if (matchesSearch && matchesCategory && matchesYear) {
+                        $(this).show().addClass('fade-in');
+                    } else {
+                        $(this).hide().removeClass('fade-in');
+                    }
+                });
+
+                // Update results count
+                const visibleMovies = $('.movie-card-wrapper:visible').length;
+                updateResultsCount(visibleMovies);
+            }
+
+            function updateResultsCount(count) {
+                let resultsText = '';
+                if ($('#movieSearch').val() || $('#categoryFilter').val() || $('#yearFilter').val()) {
+                    resultsText = `<small class="text-muted">Showing ${count} movie(s)</small>`;
+                    
+                    // Remove existing results text
+                    $('.results-count').remove();
+                    
+                    // Add new results text
+                    $('.movie-grid-container').before(`<div class="results-count mb-2">${resultsText}</div>`);
+                } else {
+                    $('.results-count').remove();
+                }
+            }
+
+            // Add hover effects to movie cards
+            $('.movie-card').hover(
+                function() {
+                    $(this).addClass('movie-card-hover');
+                },
+                function() {
+                    $(this).removeClass('movie-card-hover');
+                }
+            );
+        });
+    </script>
+}
+
+
+

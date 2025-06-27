@@ -12,8 +12,8 @@ namespace DAL.Data.Repositories.Intrfaces
     public interface IMovieRepo:IGenericRepo<Movie>
     {
         Task<IEnumerable<Movie>> GetMoviesByCategoryAsync(Category category);
-        Task<IEnumerable<Movie>> GetMoviesByProducerAsync(Producer producer);
         Task<Movie> GetMoviesWithShowtimesAsync(int MovieID);
         Task<IEnumerable<Movie>> GetMovieByActorAsync(int actorID);
+        Task<IEnumerable<Movie>> GetAllMoviesWithActors();
     }
 }

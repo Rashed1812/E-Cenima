@@ -4,13 +4,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using BLL.DTO.Actors;
+using DAL.Data.Models;
+using DAL.Data.Repositories.GenericRepositories;
 
 namespace BLL.Services.ActorService
 {
-    public interface IActorService
+    public interface IActorService 
     {
         Task<ICollection<ActorDto>> GetAllAsync();
         Task<ActorDetailsDTO> GetByIdAsync(int id);
         Task<ICollection<ActorDto>> GetActorsByNameAsync(string name);
+        Task AddAsync(ActorAddDto actorAddDto);
+        Task RemoveAsync(int Id);
+        Task EditAsync(ActorEditDto actorDto);
+
     }
 }

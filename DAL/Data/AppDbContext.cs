@@ -22,7 +22,7 @@ namespace DAL.Data
         }
         public DbSet<Movie> Movies { get; set; }
         public DbSet<Actor> Actors { get; set; }
-        public DbSet<Producer> Producers { get; set; }
+        //public DbSet<Producer> Producers { get; set; }
         public DbSet<MovieActor> MovieActors { get; set; }
         public DbSet<Cinema> Cinemas { get; set; }
         public DbSet<ShowTime> ShowTimes { get; set; }

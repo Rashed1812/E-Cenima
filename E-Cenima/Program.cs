@@ -1,5 +1,6 @@
 using BLL.Services.ActorService;
 using BLL.Services.CinemaService;
+using BLL.Services.FileService;
 using BLL.Services.Movies;
 using BLL.Services.TimingService;
 using DAL.Data;
@@ -24,6 +25,7 @@ namespace E_Cenima
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
             });
 
+
             builder.Services.AddScoped<IMovieRepo, MovieRepo>();
             builder.Services.AddScoped<IMovieService,MovieService>();
             builder.Services.AddScoped<ICinemaRepo, CinemaRepo>();
@@ -32,6 +34,9 @@ namespace E_Cenima
             builder.Services.AddScoped<IActorService, ActorService>();
             builder.Services.AddScoped<ITimeRepo, TimeRepo>();
             builder.Services.AddScoped<ITimeService, TimeService>();
+
+            builder.Services.AddScoped<IFileService, FileService>();
+
 
 
             var app = builder.Build();

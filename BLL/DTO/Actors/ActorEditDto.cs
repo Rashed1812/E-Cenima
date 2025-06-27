@@ -1,19 +1,20 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using DAL.Data.Models.Movie_Module;
 
-namespace BLL.DTO.Producer
+namespace BLL.DTO.Actors
 {
-    public class ProducerDTO
+    public class ActorEditDto
     {
         public int Id { get; set; }
+
+        public IFormFile ProfilePictureFile { get; set; }  
         [Display(Name = "Profile Picture")]
-        [Required(ErrorMessage = "Profile Picture is required")]
-        public string ProfilePictureURL { get; set; }
+        public string? ProfilePictureURL { get; set; }
 
         [Display(Name = "Full Name")]
         [Required(ErrorMessage = "Full Name is required")]
@@ -23,7 +24,5 @@ namespace BLL.DTO.Producer
         [Display(Name = "Biography")]
         [Required(ErrorMessage = "Biography is required")]
         public string Bio { get; set; }
-
-        public ICollection<DAL.Data.Models.Movie_Module.Movie> Movies { get; set; }
     }
 }

@@ -1,0 +1,90 @@
+﻿@model CinemaAddDto
+
+@{
+    ViewData["Title"] = "AdminAdd";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="cinema-form-container">
+            <div class="d-flex align-items-center mb-4">
+                <a asp-action="AdminIndex" class="btn btn-outline-secondary me-3">
+                    <i class="fas fa-arrow-left"></i>
+                </a>
+                <h1 class="cinema-title mb-0">Add New Cinema</h1>
+            </div>
+
+            <form asp-action="AdminAdd" asp-controller="Cinema" method="post" class="cinema-form" enctype="multipart/form-data">
+                <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                <div class="form-group mb-3">
+                    <label asp-for="Name" class="form-label">
+                        <i class="fas fa-theater-masks me-2"></i>Cinema Name *
+                    </label>
+                    <input asp-for="Name" class="form-control" placeholder="Enter cinema name" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label asp-for="Address" class="form-label">
+                        <i class="fas fa-map-marker-alt me-2"></i>Address *
+                    </label>
+                    <input asp-for="Address" class="form-control" placeholder="Enter cinema address" />
+                    <span asp-validation-for="Address" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label asp-for="Capacity" class="form-label">
+                        <i class="fas fa-users me-2"></i>Capacity *
+                    </label>
+                    <input asp-for="Capacity" class="form-control" type="number" min="1" max="10000" placeholder="Enter seating capacity" />
+                    <span asp-validation-for="Capacity" class="text-danger"></span>
+                    <div class="form-text">Maximum capacity: 10,000 seats</div>
+                </div>
+
+                <div class="form-group mb-4">
+                    <label asp-for="Logo" class="form-label">
+                        <i class="fas fa-image me-2"></i>Logo URL
+                    </label>
+                    <input type="file" asp-for="Logo" class="form-control" accept="image/*"
+                               onchange="document.getElementById('file-name').textContent = this.files[0]?.name || 'No file chosen'">
+                    <span asp-validation-for="Logo" class="text-danger"></span>
+                    <div class="form-text">Provide a URL to an image for the cinema logo</div>
+                </div>
+              
+
+                <div class="form-actions d-flex gap-2">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save me-2"></i>Save Cinema
+                    </button>
+                    <a asp-action="Index" class="btn btn-secondary">
+                        <i class="fas fa-times me-2"></i>Cancel
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+        // Real-time validation feedback
+        $(document).ready(function() {
+            $('input').on('blur', function() {
+                $(this).removeClass('is-invalid is-valid');
+                var isValid = this.checkValidity();
+                $(this).addClass(isValid ? 'is-valid' : 'is-invalid');
+            });
+
+
+          
+        });
+    </script>
+}
+

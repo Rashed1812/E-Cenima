@@ -16,9 +16,6 @@ namespace DAL.Data.Configurations
             builder.Property(m => m.ReleaseDate).IsRequired();
             builder.Property(m => m.MovieCategory).IsRequired();
 
-            builder.HasOne(m => m.Producer)
-                   .WithMany(p => p.Movies)
-                   .HasForeignKey(m => m.ProducerId);
 
             builder.HasMany(m => m.MovieActors)
                    .WithOne(ma => ma.Movie)

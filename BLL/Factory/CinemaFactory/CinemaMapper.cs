@@ -23,6 +23,18 @@ namespace BLL.Factory.CinemaFactory
                 Showtimes = cinema.Showtimes
             };
         }
+        public static CinemaAdminDto MapToAdminDto(this Cinema cinema)
+        {
+            if (cinema == null) return null;
+            return new CinemaAdminDto
+            {
+                Id = cinema.Id,
+                Name = cinema.Name,
+                Address = cinema.Address,
+                Logo = cinema.Logo,
+                Capacity = cinema.Capacity,
+            };
+        }
         public static CinemaDetailsDTO MapToDetailsDto(this Cinema cinema)
         {
             if (cinema == null) return null;

@@ -39,17 +39,32 @@ namespace BLL.Factory.MovieFactory
                 TrailerURL = movie.TrailerURL,
             };
         }
-        public static Movie MapToCreateMovie(CreateMovieDTO createMovieDto)
+        public static Movie MapToCreateMovie(MovieAddDto createMovieDto)
         {
             if (createMovieDto == null) return null;
+            
             return new Movie
             {
                 Name = createMovieDto.Name,
                 Description = createMovieDto.Description,
-                ImageURL = createMovieDto.ImageURL,
                 MovieCategory = createMovieDto.MovieCategory,
                 ReleaseDate = createMovieDto.ReleaseDate,
                 TrailerURL = createMovieDto.TrailerURL,
+            };
+        }
+        public static MovieAdminDto MapToAdminDto(Movie movie)
+        {
+            if (movie == null) return null;
+            return new MovieAdminDto
+            {
+                Id=movie.Id,
+                Name = movie.Name,
+                Description = movie.Description,
+                ImageURL = movie.ImageURL,
+                MovieCategory = movie.MovieCategory,
+                ReleaseDate = movie.ReleaseDate,
+                TrailerURL = movie.TrailerURL,
+                MovieActors = movie.MovieActors,
             };
         }
 

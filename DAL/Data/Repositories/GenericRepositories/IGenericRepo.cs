@@ -15,7 +15,7 @@ namespace DAL.Data.Repositories.GenericRepositories
         Task<T?> FindByIdAsync(int id);
         Task<IEnumerable<T>> FindAsync(Expression<Func<T, bool>> predicate);
         Task AddAsync(T item);
-        void Remove(T item);
-        void Update(T item);
+        Task Remove(T item);
+        Task Update(T item);
     }
 }

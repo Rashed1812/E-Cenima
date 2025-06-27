@@ -9,9 +9,12 @@ namespace BLL.Services.CinemaService
 {
     public interface ICenimaService
     {
-        Task<ICollection<CinemaDTO>> GetAllCinemas();
-        Task<CinemaDetailsDTO> GetCinemaById(int id);
+        Task<ICollection<CinemaAdminDto>> GetAllCinemas();
+        Task<CinemaAdminDto> GetCinemaById(int id);
 
         Task<ICollection<CinemaDTO>> GetCinemasWithTimes();
+        Task AddCinema(CinemaAddDto cinemaDTO);
+        Task RemoveCinema(int Id);
+        Task Update(CinemaEditDto cinemaEdit);
     }
 }
