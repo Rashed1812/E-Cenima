@@ -7,6 +7,7 @@ using DAL.Data;
 using DAL.Data.Repositories.Calsses;
 using DAL.Data.Repositories.GenericRepositories;
 using DAL.Data.Repositories.Intrfaces;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace E_Cenima
@@ -34,9 +35,6 @@ namespace E_Cenima
             builder.Services.AddScoped<IActorService, ActorService>();
             builder.Services.AddScoped<ITimeRepo, TimeRepo>();
             builder.Services.AddScoped<ITimeService, TimeService>();
-
-            builder.Services.AddScoped<IFileService, FileService>();
-
 
 
             var app = builder.Build();
