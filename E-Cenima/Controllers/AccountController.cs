@@ -5,8 +5,12 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace E_Cenima.Controllers
 {
-    public class AccountController(UserManager<ApplicationUser> _userManager ,SignInManager<ApplicationUser> _signInManager) : Controller
+    public class AccountController(UserManager<ApplicationUser> _userManager ,SignInManager<ApplicationUser> _signInManager, RoleManager<IdentityRole> roleManager) : Controller
     {
+        private readonly UserManager<ApplicationUser> userManager = _userManager;
+        private readonly SignInManager<ApplicationUser> signInManager = _signInManager;
+        private readonly RoleManager<IdentityRole> roleManager = roleManager;
+
         [HttpGet]
         public IActionResult Register() => View();
         [HttpPost]
@@ -14,14 +18,45 @@ namespace E_Cenima.Controllers
         {
             if (!ModelState.IsValid)
                 return View(registerViewModel);
+
             var user = new ApplicationUser
             {
                 FullName = registerViewModel.FirstName + " " + registerViewModel.LastName,
                 UserName = registerViewModel.UserName,
                 Email = registerViewModel.Email,
             };
-            var result = _userManager.CreateAsync(user, registerViewModel.Password).Result;
-            if (result.Succeeded) return RedirectToAction("Login");
+
+            var result = userManager.CreateAsync(user, registerViewModel.Password).Result;
+
+            if (result.Succeeded)
+            {
+                //  Ensure role
+                var roleName = UserRole.User;
+
+                if (!roleManager.RoleExistsAsync(roleName).Result)
+                {
+                    var roleResult = roleManager.CreateAsync(new IdentityRole(roleName)).Result;
+
+                    if (!roleResult.Succeeded)
+                    {
+                        ModelState.AddModelError("", "Failed to create role.");
+                        return View(registerViewModel);
+                    }
+                }
+
+                var addToRoleResult = userManager.AddToRoleAsync(user, roleName).Result;
+
+                if (!addToRoleResult.Succeeded)
+                {
+                    foreach (var error in addToRoleResult.Errors)
+                    {
+                        ModelState.AddModelError(string.Empty, error.Description);
+                    }
+                    return View(registerViewModel);
+                }
+
+                return RedirectToAction("Login");
+            }
             else
             {
                 foreach (var error in result.Errors)
@@ -31,6 +66,7 @@ namespace E_Cenima.Controllers
                 return View(registerViewModel);
             }
         }
+
         [HttpGet]
         public IActionResult Login() => View();
         [HttpPost]
@@ -39,13 +75,13 @@ namespace E_Cenima.Controllers
             if (!ModelState.IsValid) return View(loginViewModel);
 
 
-            var user = await _userManager.FindByEmailAsync(loginViewModel.Email);
+            var user = await userManager.FindByEmailAsync(loginViewModel.Email);
             if (user is not null)
             {
-                var flag = await _userManager.CheckPasswordAsync(user, loginViewModel.Password);
+                var flag = await userManager.CheckPasswordAsync(user, loginViewModel.Password);
                 if (flag)
                 {
-                    var result = await _signInManager.PasswordSignInAsync(user, loginViewModel.Password, loginViewModel.RememberMe, false);
+                    var result = await signInManager.PasswordSignInAsync(user, loginViewModel.Password, loginViewModel.RememberMe, false);
                     if (result.Succeeded)
                         return RedirectToAction("Index", "Home");
                 }
@@ -58,7 +94,7 @@ namespace E_Cenima.Controllers
         }
         public new  async Task<IActionResult> Logout()
         {
-            await _signInManager.SignOutAsync();
+            await signInManager.SignOutAsync();
             return RedirectToAction(nameof(Login));
         }
         public IActionResult ResetPassword()
