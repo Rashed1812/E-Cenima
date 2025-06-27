@@ -35,7 +35,7 @@ namespace E_Cenima
             builder.Services.AddScoped<IActorService, ActorService>();
             builder.Services.AddScoped<ITimeRepo, TimeRepo>();
             builder.Services.AddScoped<ITimeService, TimeService>();
-
+            builder.Services.AddScoped<IFileService, FileService>();
 
             var app = builder.Build();
 
