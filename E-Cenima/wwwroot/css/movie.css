@@ -726,6 +726,36 @@
     }
 }
 
+/* Actors Section */
+.actors-container {
+    margin-top: 1rem;
+}
+
+.selected-actors {
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.selected-actor-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    padding: 0.5rem 0.75rem;
+    margin-bottom: 0.5rem;
+}
+
+.actor-name {
+    color: var(--text-primary);
+    font-weight: 500;
+}
+
+.remove-actor {
+    padding: 0.25rem 0.5rem;
+    font-size:  0.75rem;
+}
 /* Custom Scrollbar */
 .selected-actors::-webkit-scrollbar {
     width: 6px;

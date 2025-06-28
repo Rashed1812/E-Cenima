@@ -1,0 +1,313 @@
+@model List<DAL.Data.Models.Ticket>
+@{
+    ViewData["Title"] = "Select Your Seats";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var timing = ViewBag.Timing as DAL.Data.Models.Timing;
+    var cinema = ViewBag.Cinema as DAL.Data.Models.Cinema;
+    var movie = ViewBag.Movie as DAL.Data.Models.Movie_Module.Movie;
+    var showDate = (DateTime)ViewBag.ShowDate;
+}
+
+<link href="~/css/seat-selection.css" rel="stylesheet" />
+
+<div class="container-fluid seat-selection-container">
+    <!-- Movie and Show Info Header -->
+    <div class="show-info-header">
+        <div class="row align-items-center">
+            <div class="col-md-2">
+                <img src="@movie.ImageURL" alt="@movie.Name" class="movie-poster-small" 
+                     onerror="this.src='https://via.placeholder.com/150x225/e50914/ffffff?text=Movie'">
+            </div>
+            <div class="col-md-10">
+                <h2 class="movie-title">@movie.Name</h2>
+                <div class="show-details">
+                    <div class="detail-item">
+                        <i class="fas fa-theater-masks"></i>
+                        <span>@cinema.Name</span>
+                    </div>
+                    <div class="detail-item">
+                        <i class="fas fa-calendar"></i>
+                        <span>@showDate.ToString("dddd, MMMM dd, yyyy")</span>
+                    </div>
+                    <div class="detail-item">
+                        <i class="fas fa-clock"></i>
+                        <span>@timing.StartTime.ToString(@"hh\:mm")</span>
+                    </div>
+                    <div class="detail-item">
+                        <i class="fas fa-dollar-sign"></i>
+                        <span>$@timing.Price (Regular) / $@(timing.Price * 1.5m) (Premium)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Seat Legend -->
+    <div class="seat-legend">
+        <div class="legend-item">
+            <div class="seat-demo available"></div>
+            <span>Available</span>
+        </div>
+        <div class="legend-item">
+            <div class="seat-demo selected"></div>
+            <span>Selected</span>
+        </div>
+        <div class="legend-item">
+            <div class="seat-demo booked"></div>
+            <span>Booked</span>
+        </div>
+        <div class="legend-item">
+            <div class="seat-demo premium"></div>
+            <span>Premium</span>
+        </div>
+    </div>
+
+    <!-- Cinema Screen -->
+    <div class="screen-container">
+        <div class="screen">
+            <i class="fas fa-tv"></i>
+            <span>SCREEN</span>
+        </div>
+    </div>
+
+    <!-- Seat Map -->
+    <div class="seat-map-container">
+        <form id="seatBookingForm" asp-action="BookSeats" method="post">
+            <input type="hidden" name="timingId" value="@timing.Id" />
+            <input type="hidden" id="selectedSeatsInput" name="selectedSeats" />
+            
+            <div class="seat-map">
+                @{
+                    var groupedSeats = Model.GroupBy(t => t.RowNumber).OrderBy(g => g.Key);
+                }
+                
+                @foreach (var row in groupedSeats)
+                {
+                    <div class="seat-row">
+                        <div class="row-label">@GetRowLabel(row.Key)</div>
+                        <div class="seats">
+                            @foreach (var seat in row.OrderBy(s => s.SeatNumber))
+                            {
+                                <div class="seat @GetSeatClass(seat)" 
+                                     data-seat-id="@seat.Ticket_Id"
+                                     data-row="@seat.RowNumber"
+                                     data-seat="@seat.SeatNumber"
+                                     data-price="@(seat.SeatType == DAL.Data.Models.SeatType.Premium ? timing.Price * 1.5m : timing.Price)"
+                                     data-type="@seat.SeatType.ToString().ToLower()"
+                                     title="Row @GetRowLabel(seat.RowNumber), Seat @seat.SeatNumber (@seat.SeatType)">
+                                    <i class="fas fa-chair"></i>
+                                    <span class="seat-number">@seat.SeatNumber</span>
+                                </div>
+                            }
+                        </div>
+                        <div class="row-label">@GetRowLabel(row.Key)</div>
+                    </div>
+                }
+            </div>
+        </form>
+    </div>
+
+    <!-- Booking Summary -->
+    <div class="booking-summary">
+        <div class="summary-content">
+            <div class="selected-seats-info">
+                <h5>Selected Seats: <span id="selectedSeatsCount">0</span></h5>
+                <div id="selectedSeatsList"></div>
+            </div>
+            <div class="total-price">
+                <h4>Total: $<span id="totalPrice">0.00</span></h4>
+            </div>
+            <div class="booking-actions">
+                <button type="button" class="btn btn-secondary" onclick="clearSelection()">
+                    <i class="fas fa-times"></i> Clear Selection
+                </button>
+                <button type="button" class="btn btn-primary" id="bookSeatsBtn" onclick="bookSeats()" disabled>
+                    <i class="fas fa-ticket-alt"></i> Book Selected Seats
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Confirmation Modal -->
+<div class="modal fade" id="confirmBookingModal" tabindex="-1" aria-labelledby="confirmBookingModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmBookingModalLabel">
+                    <i class="fas fa-ticket-alt me-2"></i>Confirm Booking
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="booking-confirmation-details">
+                    <h6>Movie: @movie.Name</h6>
+                    <p>Cinema: @cinema.Name</p>
+                    <p>Date: @showDate.ToString("dddd, MMMM dd, yyyy")</p>
+                    <p>Time: @timing.StartTime.ToString(@"hh\:mm")</p>
+                    <hr>
+                    <div id="confirmationSeatsList"></div>
+                    <hr>
+                    <h5>Total Amount: $<span id="confirmationTotalPrice">0.00</span></h5>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    <i class="fas fa-times"></i> Cancel
+                </button>
+                <button type="button" class="btn btn-success" onclick="confirmBooking()">
+                    <i class="fas fa-check"></i> Confirm Booking
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        let selectedSeats = [];
+        let totalPrice = 0;
+
+        $(document).ready(function() {
+            // Initialize seat selection
+            $('.seat.available').click(function() {
+                if ($(this).hasClass('selected')) {
+                    deselectSeat($(this));
+                } else {
+                    selectSeat($(this));
+                }
+                updateBookingSummary();
+            });
+
+            // Auto-hide alerts
+            setTimeout(function() {
+                $('.alert').fadeOut('slow');
+            }, 5000);
+        });
+
+        function selectSeat(seatElement) {
+            const seatId = seatElement.data('seat-id');
+            const row = seatElement.data('row');
+            const seat = seatElement.data('seat');
+            const price = parseFloat(seatElement.data('price'));
+            const type = seatElement.data('type');
+
+            if (selectedSeats.length >= 8) {
+                showAlert('You can select maximum 8 seats at a time.', 'warning');
+                return;
+            }
+
+            seatElement.addClass('selected');
+            selectedSeats.push({
+                id: seatId,
+                row: row,
+                seat: seat,
+                price: price,
+                type: type
+            });
+
+            totalPrice += price;
+        }
+
+        function deselectSeat(seatElement) {
+            const seatId = seatElement.data('seat-id');
+            const price = parseFloat(seatElement.data('price'));
+
+            seatElement.removeClass('selected');
+            selectedSeats = selectedSeats.filter(s => s.id !== seatId);
+            totalPrice -= price;
+        }
+
+        function updateBookingSummary() {
+            $('#selectedSeatsCount').text(selectedSeats.length);
+            $('#totalPrice').text(totalPrice.toFixed(2));
+
+            // Update selected seats list
+            let seatsList = '';
+            selectedSeats.forEach(seat => {
+                seatsList += `<span class="selected-seat-tag">${getRowLabel(seat.row)}${seat.seat} (${seat.type}) - $${seat.price.toFixed(2)}</span>`;
+            });
+            $('#selectedSeatsList').html(seatsList);
+
+            // Enable/disable book button
+            $('#bookSeatsBtn').prop('disabled', selectedSeats.length === 0);
+
+            // Update hidden input
+            $('#selectedSeatsInput').val(selectedSeats.map(s => s.id).join(','));
+        }
+
+        function clearSelection() {
+            $('.seat.selected').removeClass('selected');
+            selectedSeats = [];
+            totalPrice = 0;
+            updateBookingSummary();
+        }
+
+        function bookSeats() {
+            if (selectedSeats.length === 0) {
+                showAlert('Please select at least one seat.', 'warning');
+                return;
+            }
+
+            // Update confirmation modal
+            let confirmationList = '';
+            selectedSeats.forEach(seat => {
+                confirmationList += `<p>Row ${getRowLabel(seat.row)}, Seat ${seat.seat} (${seat.type}) - $${seat.price.toFixed(2)}</p>`;
+            });
+            $('#confirmationSeatsList').html(confirmationList);
+            $('#confirmationTotalPrice').text(totalPrice.toFixed(2));
+
+            $('#confirmBookingModal').modal('show');
+        }
+
+        function confirmBooking() {
+            $('#seatBookingForm').submit();
+        }
+
+        function getRowLabel(rowNumber) {
+            return String.fromCharCode(64 + rowNumber); // A, B, C, etc.
+        }
+
+        function showAlert(message, type) {
+            const alertHtml = `
+                <div class="alert alert-${type} alert-dismissible fade show" role="alert">
+                    ${message}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            `;
+            $('.seat-selection-container').prepend(alertHtml);
+            
+            setTimeout(function() {
+                $('.alert').fadeOut('slow');
+            }, 3000);
+        }
+    </script>
+}
+
+@functions {
+    string GetSeatClass(DAL.Data.Models.Ticket seat)
+    {
+        var classes = new List<string> { "seat" };
+        
+        if (seat.IsBooked)
+        {
+            classes.Add("booked");
+        }
+        else
+        {
+            classes.Add("available");
+            if (seat.SeatType == DAL.Data.Models.SeatType.Premium)
+            {
+                classes.Add("premium");
+            }
+        }
+        
+        return string.Join(" ", classes);
+    }
+    
+    string GetRowLabel(int rowNumber)
+    {
+        return ((char)(64 + rowNumber)).ToString(); // A, B, C, etc.
+    }
+}
+

@@ -36,6 +36,9 @@ namespace E_Cenima
             builder.Services.AddScoped<ITimeRepo, TimeRepo>();
             builder.Services.AddScoped<ITimeService, TimeService>();
             builder.Services.AddScoped<IFileService, FileService>();
+            builder.Services.AddIdentity<IdentityUser, IdentityRole>()
+                .AddEntityFrameworkStores<AppDbContext>()
+                .AddDefaultTokenProviders();
 
             var app = builder.Build();
 

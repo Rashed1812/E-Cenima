@@ -59,9 +59,6 @@ namespace DAL.Data.Repositories.Calsses
         {
             var movie = await _context.Movies.Include(m => m.Showtimes)
                  .ThenInclude(sh => sh.Cinema).ThenInclude(sh => sh.Showtimes).ThenInclude(c=>c.Timings).Where(m=>m.Id==MovieId).FirstOrDefaultAsync();
-
-        
-          
             return movie!;
         }
     }
