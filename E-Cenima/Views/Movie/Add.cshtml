@@ -1,8 +1,7 @@
 ﻿@using DAL.Data.Models.Movie_Module
 @model MovieAddDto
-
 @{
-    ViewData["Title"] = "Add";
+    ViewData["Title"] = "Add Movie";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
@@ -61,7 +60,7 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group mb-3">
-                                        <label asp-for="MovieCategory" class="form-label ">
+                                        <label asp-for="MovieCategory" class="form-label">
                                             <i class="fas fa-tag me-2"></i>Category *
                                         </label>
                                         <select asp-for="MovieCategory" class="form-select text-black" asp-items="Html.GetEnumSelectList<Category>()">
@@ -72,7 +71,35 @@
                                 </div>
                             </div>
 
-                          
+                            <!-- Actors Section -->
+                            <div class="form-group mb-3">
+                                <label class="form-label">
+                                    <i class="fas fa-users me-2"></i>Actors
+                                </label>
+                                <div class="actors-container">
+                                    @if (ViewBag.ActorsList != null)
+                                    {
+                                        <select id="actorSelect" class="form-select mb-2" multiple>
+                                            @foreach (var actor in (IEnumerable<Microsoft.AspNetCore.Mvc.Rendering.SelectListItem>)ViewBag.ActorsList)
+                                            {
+                                                <option value="@actor.Value">@actor.Text</option>
+                                            }
+                                        </select>
+                                        <div class="form-text">Hold Ctrl/Cmd to select multiple actors</div>
+                                    }
+                                    else
+                                    {
+                                        <div class="alert alert-info">
+                                            <i class="fas fa-info-circle me-2"></i>
+                                            No actors available. Please add actors first.
+                                        </div>
+                                    }
+
+                                    <div id="selectedActors" class="selected-actors mt-3">
+                                        <!-- Selected actors will be displayed here -->
+                                    </div>
+                                </div>
+                            </div>
 
                             <div class="form-group mb-3">
                                 <label asp-for="TrailerURL" class="form-label">
@@ -113,8 +140,6 @@
                                 </div>
                             </div>
                         </div>
-
-                      
                     </div>
                 </div>
 
@@ -126,7 +151,7 @@
                         <button type="button" class="btn btn-secondary" onclick="resetForm()">
                             <i class="fas fa-undo me-2"></i>Reset Form
                         </button>
-                        <a asp-action="Index" class="btn btn-outline-secondary">
+                        <a asp-action="AdminIndex" class="btn btn-outline-secondary">
                             <i class="fas fa-times me-2"></i>Cancel
                         </a>
                     </div>
@@ -142,13 +167,13 @@
     }
 
     <script>
-              document.addEventListener('DOMContentLoaded', function() {
-          // Get today's date in YYYY-MM-DD format (required for date inputs)
-          const today = new Date().toISOString().split('T')[0];
-
-          // Set the input value
-          document.getElementById('ReleaseDate').value = today;
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get today's date in YYYY-MM-DD format (required for date inputs)
+            const today = new Date().toISOString().split('T')[0];
+            // Set the input value
+            document.getElementById('ReleaseDate').value = today;
         });
+
         $(document).ready(function() {
             // Character counter for description
             $('#Description').on('input', function() {
@@ -201,43 +226,45 @@
                 }
             });
 
-            // Actor selection functionality
-            $('#actorSelect').on('change', function() {
-                updateSelectedActors();
-            });
+            // Actor selection functionality (only if actors are available)
+            if ($('#actorSelect').length > 0) {
+                $('#actorSelect').on('change', function() {
+                    updateSelectedActors();
+                });
 
-            function updateSelectedActors() {
-                const selectedOptions = $('#actorSelect option:selected');
-                const container = $('#selectedActors');
+                function updateSelectedActors() {
+                    const selectedOptions = $('#actorSelect option:selected');
+                    const container = $('#selectedActors');
 
-                container.empty();
+                    container.empty();
 
-                if (selectedOptions.length > 0) {
-                    container.append('<h6 class="mb-2">Selected Actors:</h6>');
+                    if (selectedOptions.length > 0) {
+                        container.append('<h6 class="mb-2">Selected Actors:</h6>');
 
-                    selectedOptions.each(function() {
-                        const actorId = $(this).val();
-                        const actorName = $(this).text();
-                        
-                        container.append(`
-                            <div class="selected-actor-item">
-                                <span class="actor-name">${actorName}</span>
-                                <button type="button" class="btn btn-sm btn-outline-danger remove-actor" data-actor-id="${actorId}">
-                                    <i class="fas fa-times"></i>
-                                </button>
-                                <input type="hidden" name="SelectedActorIds" value="${actorId}" />
-                            </div>
-                        `);
-                    });
+                        selectedOptions.each(function() {
+                            const actorId = $(this).val();
+                            const actorName = $(this).text();
+
+                            container.append(`
+                                <div class="selected-actor-item">
+                                    <span class="actor-name">${actorName}</span>
+                                    <button type="button" class="btn btn-sm btn-outline-danger remove-actor" data-actor-id="${actorId}">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                    <input type="hidden" name="SelectedActorIds" value="${actorId}" />
+                                </div>
+                            `);
+                        });
+                    }
                 }
-            }
 
-            // Remove actor functionality
-            $(document).on('click', '.remove-actor', function() {
-                const actorId = $(this).data('actor-id');
-                $(`#actorSelect option[value="${actorId}"]`).prop('selected', false);
-                updateSelectedActors();
-            });
+                // Remove actor functionality
+                $(document).on('click', '.remove-actor', function() {
+                    const actorId = $(this).data('actor-id');
+                    $(`#actorSelect option[value="${actorId}"]`).prop('selected', false);
+                    updateSelectedActors();
+                });
+            }
 
             // Form validation enhancement
             $('input, textarea, select').on('blur', function() {
@@ -292,8 +319,12 @@
                 $('#descriptionCount').text('0');
                 $('.is-valid, .is-invalid').removeClass('is-valid is-invalid');
                 $('.custom-error').remove();
+
+                // Reset date to today
+                const today = new Date().toISOString().split('T')[0];
+                document.getElementById('ReleaseDate').value = today;
             }
         }
-     </script>
+    </script>
 }
 

@@ -18,9 +18,10 @@ namespace BLL.Services.Movies
     {
         public async Task CreateAsync(MovieAddDto createMovieDTO)
         {
+            var URL = await _fileService.UploadFileAsync(createMovieDTO.ImageFile, "Images/Movies");
+
             try
             {
-                var URL = await _fileService.UploadFileAsync(createMovieDTO.ImageFile, "Images/Movies");
                 var movie = new Movie
                 {
                     Name = createMovieDTO.Name,
@@ -29,18 +30,33 @@ namespace BLL.Services.Movies
                     TrailerURL = createMovieDTO.TrailerURL,
                     ReleaseDate = createMovieDTO.ReleaseDate,
                     ImageURL = URL,
+                    MovieActors = createMovieDTO.Actors?.Select(actorId => new MovieActor { ActorId = actorId.Id }).ToList()
                 };
                 await _movieRepo.AddAsync(movie);
             }catch(Exception ex)
             {
+                 _fileService.DeleteFile(URL);
                 throw new Exception(ex.Message);
             }
            
         }
 
-        public Task<bool> DeleteAsync(int id)
+        public async Task<bool> DeleteAsync(int id)
         {
-            throw new NotImplementedException();
+            if (id <= 0)
+            {
+                throw new ArgumentException("Invalid movie ID.");
+            }
+            try
+            {
+                var movie = await _movieRepo.FindByIdAsync(id);
+                var result = _movieRepo.Remove(movie);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Error deleting movie with ID {id}: {ex.Message}");
+            }
         }
 
         public async Task<ICollection<MovieAdminDto>> GetAllAdminAsync()
@@ -107,9 +123,31 @@ namespace BLL.Services.Movies
             return movieWithShowItems;
         }
 
-        public Task<MovieDto> UpdateAsync(int id, UpdateMovieDTO updateMovieDTO)
+        public void UpdateAsync( UpdateMovieDTO updateMovieDTO)
         {
-            throw new NotImplementedException();
+            if (updateMovieDTO == null)
+            {
+                throw new ArgumentNullException(nameof(updateMovieDTO), "UpdateMovieDTO cannot be null");
+            }
+            var movie = new Movie
+            {
+                Id = updateMovieDTO.Id,
+                Name = updateMovieDTO.Name,
+                Description = updateMovieDTO.Description,
+                ImageURL = updateMovieDTO.ImageURL != null ? _fileService.UploadFileAsync(updateMovieDTO.ImageURL, "Images/Movies").Result : null,
+                ReleaseDate = updateMovieDTO.ReleaseDate,
+                TrailerURL = updateMovieDTO.TrailerURL,
+                MovieCategory = updateMovieDTO.MovieCategory,
+              
+            };
+            try
+            {
+                _movieRepo.Update(movie);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Error updating movie with ID {updateMovieDTO.Id}: {ex.Message}");
+            }
         }
     }
 }

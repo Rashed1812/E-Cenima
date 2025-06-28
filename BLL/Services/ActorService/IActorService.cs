@@ -11,7 +11,7 @@ namespace BLL.Services.ActorService
 {
     public interface IActorService 
     {
-        Task<ICollection<ActorDto>> GetAllAsync();
+        Task<IEnumerable<ActorDto>> GetAllAsync();
         Task<ActorDetailsDTO> GetByIdAsync(int id);
         Task<ICollection<ActorDto>> GetActorsByNameAsync(string name);
         Task AddAsync(ActorAddDto actorAddDto);

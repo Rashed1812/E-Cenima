@@ -1,7 +1,278 @@
-﻿@model ICollection<MovieDto>
+@model ICollection<MovieDto>
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Movies - E-Cinema";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Index</h1>
+<link href="~/css/movie-index.css" rel="stylesheet" />
+
+<!-- Hero Section -->
+<section class="hero-section">
+    <div class="hero-background">
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-lg-6">
+                        <h1 class="hero-title">
+                            Experience Cinema
+                            <span class="highlight">Like Never Before</span>
+                        </h1>
+                        <p class="hero-subtitle">
+                            Discover the latest blockbusters, book your seats, and enjoy the ultimate movie experience with premium comfort and cutting-edge technology.
+                        </p>
+                        <div class="hero-buttons">
+                            <a href="#movies-section" class="btn btn-primary btn-lg hero-btn">
+                                <i class="fas fa-film me-2"></i>Browse Movies
+                            </a>
+                            <a href="#" class="btn btn-outline-light btn-lg hero-btn">
+                                <i class="fas fa-play me-2"></i>Watch Trailer
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="hero-image">
+                            <div class="floating-cards">
+                                @if (Model != null && Model.Any())
+                                {
+                                    @foreach (var movie in Model.Take(3))
+                                    {
+                                        <div class="floating-card">
+                                            <img src="@movie.ImageURL" alt="@movie.Name" 
+                                                 onerror="this.src='https://via.placeholder.com/200x300/e50914/ffffff?text=Movie'">
+                                        </div>
+                                    }
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section class="features-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-couch"></i>
+                    </div>
+                    <h4>Premium Seating</h4>
+                    <p>Comfortable reclining seats with premium amenities for the ultimate movie experience.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <h4>Easy Booking</h4>
+                    <p>Book your tickets online with our user-friendly interface and secure payment system.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-film"></i>
+                    </div>
+                    <h4>Latest Movies</h4>
+                    <p>Watch the latest blockbusters and exclusive premieres in stunning 4K quality.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Movies Section -->
+<section id="movies-section" class="movies-section">
+    <div class="container">
+        <div class="section-header text-center">
+            <h2 class="section-title">Now Showing</h2>
+            <p class="section-subtitle">Discover the latest movies playing in our cinemas</p>
+        </div>
+
+        <!-- Movie Filters -->
+        <div class="movie-filters">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <div class="filter-tabs">
+                        <button class="filter-tab active" data-filter="all">All Movies</button>
+                        <button class="filter-tab" data-filter="Action">Action</button>
+                        <button class="filter-tab" data-filter="Comedy">Comedy</button>
+                        <button class="filter-tab" data-filter="Drama">Drama</button>
+                        <button class="filter-tab" data-filter="Horror">Horror</button>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="search-box">
+                        <input type="text" id="movieSearch" placeholder="Search movies..." class="form-control">
+                        <i class="fas fa-search search-icon"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Movies Grid -->
+        @if (Model != null && Model.Any())
+        {
+            <div class="movies-grid" id="moviesGrid">
+                @foreach (var movie in Model)
+                {
+                    <div class="movie-card" data-category="@movie.MovieCategory" data-name="@movie.Name.ToLower()">
+                        <div class="movie-poster">
+                            <img src="@movie.ImageURL" alt="@movie.Name" 
+                                 onerror="this.src='https://via.placeholder.com/300x450/e50914/ffffff?text=@movie.Name'">
+                            <div class="movie-overlay">
+                                <div class="movie-actions">
+                                    <a href="@Url.Action("Details", "Movie", new { id = movie.Id })" class="btn btn-primary btn-sm">
+                                        <i class="fas fa-info-circle"></i> Details
+                                    </a>
+                                    <a href="#" class="btn btn-success btn-sm book-now-btn" data-movie-id="@movie.Id">
+                                        <i class="fas fa-ticket-alt"></i> Book Now
+                                    </a>
+                                </div>
+                                @if (!string.IsNullOrEmpty(movie.TrailerURL))
+                                {
+                                    <div class="trailer-btn">
+                                        <a href="@movie.TrailerURL" target="_blank" class="btn btn-warning btn-sm">
+                                            <i class="fas fa-play"></i> Trailer
+                                        </a>
+                                    </div>
+                                }
+                            </div>
+                            <div class="movie-rating">
+                                <i class="fas fa-star"></i>
+                                <span>8.5</span>
+                            </div>
+                        </div>
+                        <div class="movie-info">
+                            <h5 class="movie-title">@movie.Name</h5>
+                            <p class="movie-category">@movie.MovieCategory</p>
+                            <p class="movie-description">@(movie.Description.Length > 100 ? movie.Description.Substring(0, 100) + "..." : movie.Description)</p>
+                            <div class="movie-meta">
+                                <span class="release-date">
+                                    <i class="fas fa-calendar"></i>
+                                    @movie.ReleaseDate.ToString("yyyy")
+                                </span>
+                                <span class="duration">
+                                    <i class="fas fa-clock"></i>
+                                    2h 30m
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+        else
+        {
+            <div class="no-movies text-center">
+                <i class="fas fa-film fa-3x text-muted mb-3"></i>
+                <h4 class="text-muted">No Movies Available</h4>
+                <p class="text-muted">Check back later for new releases!</p>
+            </div>
+        }
+    </div>
+</section>
+
+<!-- Newsletter Section -->
+<section class="newsletter-section">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <h3>Stay Updated</h3>
+                <p>Get notified about new movie releases, special offers, and exclusive events.</p>
+            </div>
+            <div class="col-lg-6">
+                <div class="newsletter-form">
+                    <div class="input-group">
+                        <input type="email" class="form-control" placeholder="Enter your email">
+                        <button class="btn btn-primary" type="button">
+                            <i class="fas fa-paper-plane"></i> Subscribe
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            // Smooth scrolling for hero button
+            $('a[href^="#"]').on('click', function(event) {
+                var target = $(this.getAttribute('href'));
+                if( target.length ) {
+                    event.preventDefault();
+                    $('html, body').stop().animate({
+                        scrollTop: target.offset().top - 80
+                    }, 1000);
+                }
+            });
+
+            // Movie filter functionality
+            $('.filter-tab').on('click', function() {
+                $('.filter-tab').removeClass('active');
+                $(this).addClass('active');
+                
+                const filter = $(this).data('filter');
+                filterMovies(filter, $('#movieSearch').val());
+            });
+
+            // Search functionality
+            $('#movieSearch').on('input', function() {
+                const searchTerm = $(this).val();
+                const activeFilter = $('.filter-tab.active').data('filter');
+                filterMovies(activeFilter, searchTerm);
+            });
+
+            // Filter movies function
+            function filterMovies(category, searchTerm) {
+                $('.movie-card').each(function() {
+                    const movieCategory = $(this).data('category');
+                    const movieName = $(this).data('name');
+                    
+                    const matchesCategory = category === 'all' || movieCategory === category;
+                    const matchesSearch = !searchTerm || movieName.includes(searchTerm.toLowerCase());
+                    
+                    if (matchesCategory && matchesSearch) {
+                        $(this).show().addClass('fade-in');
+                    } else {
+                        $(this).hide().removeClass('fade-in');
+                    }
+                });
+            }
+
+            // Book now button functionality
+            $('.book-now-btn').on('click', function(e) {
+                e.preventDefault();
+                const movieId = $(this).data('movie-id');
+                // Redirect to showtimes or booking page
+                window.location.href = `/ShowTime/Index?movieId=${movieId}`;
+            });
+
+            // Add animation on scroll
+            $(window).scroll(function() {
+                $('.movie-card').each(function() {
+                    const elementTop = $(this).offset().top;
+                    const elementBottom = elementTop + $(this).outerHeight();
+                    const viewportTop = $(window).scrollTop();
+                    const viewportBottom = viewportTop + $(window).height();
+                    
+                    if (elementBottom > viewportTop && elementTop < viewportBottom) {
+                        $(this).addClass('animate-in');
+                    }
+                });
+            });
+
+            // Trigger scroll event on load
+            $(window).trigger('scroll');
+        });
+    </script>
+}
 

@@ -3,8 +3,6 @@
 @{
     ViewData["Title"] = "Cinema Management";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
-
-    
 }
 <link href="/css/Cinema.css" rel="stylesheet" />
 
@@ -31,45 +29,132 @@
     </div>
 }
 
+<!-- Search and Filter Section -->
+<div class="cinema-filters mb-4">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="input-group">
+                <span class="input-group-text">
+                    <i class="fas fa-search"></i>
+                </span>
+                <input type="text" id="cinemaSearch" class="form-control" placeholder="Search cinemas by name or address...">
+            </div>
+        </div>
+        <div class="col-md-3">
+            <select id="capacityFilter" class="form-select">
+                <option value="">All Capacities</option>
+                <option value="small">Small (< 100)</option>
+                <option value="medium">Medium (100-300)</option>
+                <option value="large">Large (> 300)</option>
+            </select>
+        </div>
+        <div class="col-md-3">
+            <button id="clearFilters" class="btn btn-outline-secondary w-100">
+                <i class="fas fa-times me-1"></i>Clear Filters
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Cinema Statistics -->
+@if (Model != null && Model.Any())
+{
+    <div class="cinema-stats mb-4">
+        <div class="row">
+            <div class="col-md-3">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-theater-masks"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>@Model.Count()</h3>
+                        <p>Total Cinemas</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>@Model.Sum(c => c.Capacity)</h3>
+                        <p>Total Capacity</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>@Math.Round(Model.Average(c => c.Capacity))</h3>
+                        <p>Avg Capacity</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-building"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>@Model.Where(c => c.Capacity > 300).Count()</h3>
+                        <p>Large Cinemas</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
 <div class="cinema-table-container">
     <table class="table table-hover cinema-table">
         <thead>
             <tr>
                 <th>
-                    @Html.DisplayNameFor(model => model.FirstOrDefault().Id)
+                    <i class="fas fa-hashtag me-1"></i>ID
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.FirstOrDefault().Name)
+                    <i class="fas fa-theater-masks me-1"></i>Name
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.FirstOrDefault().Address)
+                    <i class="fas fa-map-marker-alt me-1"></i>Address
                 </th>
                 <th>
-                   Capacity
+                    <i class="fas fa-users me-1"></i>Capacity
                 </th>
                 <th>
-                    Logo
+                    <i class="fas fa-image me-1"></i>Logo
                 </th>
-                <th>Actions</th>
+                <th>
+                    <i class="fas fa-cogs me-1"></i>Actions
+                </th>
             </tr>
         </thead>
-        <tbody>
+        <tbody id="cinemaTableBody">
             @if (Model != null && Model.Any())
             {
                 @foreach (var item in Model)
                 {
-                    <tr class="cinema-row">
+                    <tr class="cinema-row" 
+                        data-name="@item.Name.ToLower()" 
+                        data-address="@item.Address.ToLower()" 
+                        data-capacity="@item.Capacity">
                         <td data-label="ID">
-                            @Html.DisplayFor(modelItem => item.Id)
+                            <span class="badge bg-primary">@item.Id</span>
                         </td>
                         <td data-label="Name">
-                            @Html.DisplayFor(modelItem => item.Name)
+                            <strong>@item.Name</strong>
                         </td>
                         <td data-label="Address">
-                            @Html.DisplayFor(modelItem => item.Address)
+                            <i class="fas fa-map-marker-alt text-muted me-1"></i>@item.Address
                         </td>
-                        <td data-label="Address">
-                            @Html.DisplayFor(modelItem => item.Capacity)
+                        <td data-label="Capacity">
+                            <span class="badge @(item.Capacity > 300 ? "bg-success" : item.Capacity > 100 ? "bg-warning" : "bg-secondary")">
+                                @item.Capacity seats
+                            </span>
                         </td>
                         <td data-label="Logo">
                             @if (!string.IsNullOrEmpty(item.Logo))
@@ -79,20 +164,23 @@
                             }
                             else
                             {
-                                <span class="text-muted">No logo</span>
+                                <div class="no-logo-placeholder">
+                                    <i class="fas fa-image text-muted"></i>
+                                </div>
                             }
                         </td>
                         <td data-label="Actions">
                             <div class="action-buttons">
-                                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-success me-1">
-                                    <i class="fas fa-edit"></i> Edit
+                                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-info me-1" title="View Details">
+                                    <i class="fas fa-eye"></i>
                                 </a>
-                                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-info me-1">
-                                    <i class="fas fa-eye"></i> Details
+                                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-success me-1" title="Edit Cinema">
+                                    <i class="fas fa-edit"></i>
                                 </a>
-                                <a asp-action="Delete" asp-controller="Cinema" asp-route-id="@item.Id" class="btn btn-sm btn-danger">
-                                    <i class="fas fa-trash"></i> Delete
-                                </a>
+                                <button type="button" class="btn btn-sm btn-danger" title="Delete Cinema"
+                                        onclick="confirmDelete(@item.Id, '@item.Name')">
+                                    <i class="fas fa-trash"></i>
+                                </button>
                             </div>
                         </td>
                     </tr>
@@ -106,7 +194,7 @@
                             <i class="fas fa-theater-masks fa-3x text-muted mb-3"></i>
                             <h5 class="text-muted">No cinemas found</h5>
                             <p class="text-muted">Get started by adding your first cinema.</p>
-                            <a asp-action="Create" class="btn btn-primary">
+                            <a asp-action="AdminAdd" class="btn btn-primary">
                                 <i class="fas fa-plus me-2"></i>Add First Cinema
                             </a>
                         </div>
@@ -117,13 +205,187 @@
     </table>
 </div>
 
+<!-- Delete Confirmation Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">
+                    <i class="fas fa-exclamation-triangle text-warning me-2"></i>Confirm Delete
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete the cinema "<strong id="cinemaNameToDelete"></strong>"?</p>
+                <p class="text-muted">This action cannot be undone.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    <i class="fas fa-times me-1"></i>Cancel
+                </button>
+                <a id="confirmDeleteBtn" href="#" class="btn btn-danger">
+                    <i class="fas fa-trash me-1"></i>Delete Cinema
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
 
 @section Scripts {
     <script>
-        // Auto-hide alerts after 5 seconds
-        setTimeout(function() {
-            $('.alert').fadeOut('slow');
-        }, 5000);
+        $(document).ready(function() {
+            // Auto-hide alerts after 5 seconds
+            setTimeout(function() {
+                $('.alert').fadeOut('slow');
+            }, 5000);
+
+            // Search functionality
+            $('#cinemaSearch').on('input', function() {
+                filterCinemas();
+            });
+
+            // Capacity filter
+            $('#capacityFilter').on('change', function() {
+                filterCinemas();
+            });
+
+            // Clear filters
+            $('#clearFilters').on('click', function() {
+                $('#cinemaSearch').val('');
+                $('#capacityFilter').val('');
+                filterCinemas();
+            });
+
+            function filterCinemas() {
+                const searchTerm = $('#cinemaSearch').val().toLowerCase();
+                const selectedCapacity = $('#capacityFilter').val();
+
+                $('.cinema-row').each(function() {
+                    const cinemaName = $(this).data('name');
+                    const cinemaAddress = $(this).data('address');
+                    const cinemaCapacity = $(this).data('capacity');
+
+                    const matchesSearch = !searchTerm || 
+                        cinemaName.includes(searchTerm) || 
+                        cinemaAddress.includes(searchTerm);
+                    
+                    let matchesCapacity = true;
+                    if (selectedCapacity === 'small') {
+                        matchesCapacity = cinemaCapacity < 100;
+                    } else if (selectedCapacity === 'medium') {
+                        matchesCapacity = cinemaCapacity >= 100 && cinemaCapacity <= 300;
+                    } else if (selectedCapacity === 'large') {
+                        matchesCapacity = cinemaCapacity > 300;
+                    }
+
+                    if (matchesSearch && matchesCapacity) {
+                        $(this).show().addClass('fade-in');
+                    } else {
+                        $(this).hide().removeClass('fade-in');
+                    }
+                });
+
+                // Update results count
+                const visibleCinemas = $('.cinema-row:visible').length;
+                updateResultsCount(visibleCinemas);
+            }
+
+            function updateResultsCount(count) {
+                let resultsText = '';
+                if ($('#cinemaSearch').val() || $('#capacityFilter').val()) {
+                    resultsText = `<small class="text-muted">Showing ${count} cinema(s)</small>`;
+                    
+                    // Remove existing results text
+                    $('.results-count').remove();
+                    
+                    // Add new results text
+                    $('.cinema-table-container').before(`<div class="results-count mb-2">${resultsText}</div>`);
+                } else {
+                    $('.results-count').remove();
+                }
+            }
+        });
+
+        function confirmDelete(cinemaId, cinemaName) {
+            $('#cinemaNameToDelete').text(cinemaName);
+            $('#confirmDeleteBtn').attr('href', '/Cinema/Delete/' + cinemaId);
+            $('#deleteModal').modal('show');
+        }
     </script>
 }
 
+<style>
+    .stat-card {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-radius: 15px;
+        padding: 20px;
+        color: white;
+        text-align: center;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        transition: transform 0.3s ease;
+    }
+
+    .stat-card:hover {
+        transform: translateY(-5px);
+    }
+
+    .stat-icon {
+        font-size: 2rem;
+        margin-bottom: 10px;
+        opacity: 0.8;
+    }
+
+    .stat-info h3 {
+        font-size: 2rem;
+        font-weight: bold;
+        margin: 0;
+    }
+
+    .stat-info p {
+        margin: 0;
+        opacity: 0.9;
+    }
+
+    .cinema-logo-img {
+        width: 50px;
+        height: 50px;
+        object-fit: cover;
+        border-radius: 8px;
+        border: 2px solid #e9ecef;
+    }
+
+    .no-logo-placeholder {
+        width: 50px;
+        height: 50px;
+        background-color: #f8f9fa;
+        border: 2px dashed #dee2e6;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .action-buttons .btn {
+        margin: 2px;
+    }
+
+    .fade-in {
+        animation: fadeIn 0.3s ease-in;
+    }
+
+    @@keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .cinema-filters {
+        background: #f8f9fa;
+        padding: 20px;
+        border-radius: 10px;
+        margin-bottom: 20px;
+    }
+
+    .empty-state {
+        padding: 40px;
+    }
+</style>

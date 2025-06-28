@@ -12,7 +12,7 @@ namespace DAL.Data.Repositories.GenericRepositories
 
         Task<IEnumerable<T>> GetAllAsync();
         Task<IEnumerable<T>> GetAllPaginationAsync(int pageSize ,int pageNumber);
-        Task<T?> FindByIdAsync(int id);
+        Task<T> FindByIdAsync(int id);
         Task<IEnumerable<T>> FindAsync(Expression<Func<T, bool>> predicate);
         Task AddAsync(T item);
         Task Remove(T item);

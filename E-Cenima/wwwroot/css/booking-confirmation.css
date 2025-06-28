@@ -1,0 +1,431 @@
+/* Booking Confirmation Styles */
+.booking-confirmation-container {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    padding: 40px 0;
+}
+
+.confirmation-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* Success Header */
+.success-header {
+    margin-bottom: 40px;
+}
+
+.success-icon {
+    font-size: 5rem;
+    color: #28a745;
+    margin-bottom: 20px;
+}
+
+.success-icon i.animated-check {
+    animation: checkmark 0.6s ease-in-out;
+}
+
+@keyframes checkmark {
+    0% {
+        transform: scale(0);
+        opacity: 0;
+    }
+    50% {
+        transform: scale(1.2);
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.success-title {
+    font-size: 3rem;
+    font-weight: bold;
+    color: white;
+    margin-bottom: 10px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.success-subtitle {
+    font-size: 1.2rem;
+    color: rgba(255, 255, 255, 0.9);
+    margin-bottom: 0;
+}
+
+/* Booking Details Card */
+.booking-details-card,
+.seat-details-card {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    margin-bottom: 30px;
+    overflow: hidden;
+}
+
+.card-header {
+    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+    color: white;
+    padding: 20px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.card-header h3 {
+    margin: 0;
+    font-size: 1.5rem;
+}
+
+.order-id {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 8px 15px;
+    border-radius: 20px;
+    font-weight: bold;
+}
+
+.card-body {
+    padding: 30px;
+}
+
+/* Movie Information */
+.movie-info {
+    text-align: center;
+}
+
+.movie-poster {
+    width: 100%;
+    max-width: 200px;
+    border-radius: 15px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+    margin-bottom: 20px;
+}
+
+.movie-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.movie-category {
+    color: #666;
+    font-style: italic;
+}
+
+/* Show Information */
+.show-info h5,
+.booking-summary h5 {
+    color: #1e3c72;
+    margin-bottom: 20px;
+    font-weight: bold;
+}
+
+.info-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+    padding: 10px;
+    background: rgba(30, 60, 114, 0.1);
+    border-radius: 10px;
+}
+
+.info-item i {
+    color: #1e3c72;
+    width: 20px;
+    margin-right: 15px;
+}
+
+/* Booking Summary */
+.summary-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.summary-item.total {
+    border-bottom: none;
+    border-top: 2px solid #1e3c72;
+    margin-top: 10px;
+    padding-top: 15px;
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+.status-badge {
+    padding: 5px 12px;
+    border-radius: 15px;
+    font-size: 0.85rem;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.status-pending {
+    background: #ffc107;
+    color: #856404;
+}
+
+.status-paid {
+    background: #28a745;
+    color: white;
+}
+
+.status-failed {
+    background: #dc3545;
+    color: white;
+}
+
+.total-price {
+    color: #28a745;
+    font-size: 1.3rem;
+    font-weight: bold;
+}
+
+/* Seat Details */
+.seats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 20px;
+}
+
+.seat-ticket {
+    background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+    border-radius: 15px;
+    padding: 20px;
+    text-align: center;
+    border: 2px solid #dee2e6;
+    transition: transform 0.3s ease;
+}
+
+.seat-ticket:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.seat-visual {
+    font-size: 2rem;
+    margin-bottom: 10px;
+}
+
+.seat-visual.regular {
+    color: #28a745;
+}
+
+.seat-visual.premium {
+    color: #ffd700;
+}
+
+.seat-position {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+.seat-type {
+    color: #666;
+    font-size: 0.9rem;
+    margin-bottom: 5px;
+    text-transform: capitalize;
+}
+
+.seat-price {
+    color: #1e3c72;
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+/* QR Code Section */
+.qr-code-section {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 20px;
+    padding: 30px;
+    margin-bottom: 30px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.qr-code-section h4 {
+    color: #1e3c72;
+    margin-bottom: 20px;
+}
+
+.qr-code-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.qr-code-placeholder {
+    width: 200px;
+    height: 200px;
+    background: linear-gradient(135deg, #1e3c72, #2a5298);
+    color: white;
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+}
+
+.qr-code-placeholder p {
+    font-size: 1rem;
+    margin: 10px 0 5px 0;
+}
+
+.qr-code-placeholder small {
+    font-size: 0.8rem;
+    opacity: 0.8;
+}
+
+.qr-instructions {
+    color: #666;
+    font-style: italic;
+}
+
+/* Action Buttons */
+.action-buttons {
+    margin-bottom: 40px;
+}
+
+.action-buttons .btn {
+    margin: 10px;
+    padding: 12px 25px;
+    border-radius: 25px;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+.action-buttons .btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+}
+
+/* Important Notes */
+.important-notes {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.important-notes h5 {
+    color: #dc3545;
+    margin-bottom: 20px;
+}
+
+.important-notes ul {
+    list-style: none;
+    padding: 0;
+}
+
+.important-notes li {
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
+    position: relative;
+    padding-left: 30px;
+}
+
+.important-notes li:before {
+    content: "•";
+    color: #dc3545;
+    font-weight: bold;
+    position: absolute;
+    left: 10px;
+}
+
+.important-notes li:last-child {
+    border-bottom: none;
+}
+
+/* Print Styles */
+@media print {
+    .booking-confirmation-container {
+        background: white !important;
+        color: black !important;
+    }
+    
+    .action-buttons,
+    .important-notes {
+        display: none !important;
+    }
+    
+    .booking-details-card,
+    .seat-details-card,
+    .qr-code-section {
+        background: white !important;
+        box-shadow: none !important;
+        border: 1px solid #ccc !important;
+    }
+    
+    .card-header {
+        background: #f8f9fa !important;
+        color: black !important;
+    }
+    
+    .success-title,
+    .success-subtitle {
+        color: black !important;
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .success-title {
+        font-size: 2rem;
+    }
+    
+    .success-icon {
+        font-size: 3rem;
+    }
+    
+    .card-header {
+        flex-direction: column;
+        gap: 10px;
+        text-align: center;
+    }
+    
+    .card-body {
+        padding: 20px;
+    }
+    
+    .seats-grid {
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+        gap: 15px;
+    }
+    
+    .qr-code-placeholder {
+        width: 150px;
+        height: 150px;
+        font-size: 2rem;
+    }
+    
+    .action-buttons .btn {
+        display: block;
+        width: 100%;
+        margin: 10px 0;
+    }
+}
+
+@media (max-width: 576px) {
+    .confirmation-content {
+        padding: 0 10px;
+    }
+    
+    .success-title {
+        font-size: 1.5rem;
+    }
+    
+    .success-subtitle {
+        font-size: 1rem;
+    }
+    
+    .seats-grid {
+        grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    }
+}
+

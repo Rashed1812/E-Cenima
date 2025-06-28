@@ -1,0 +1,192 @@
+@model DAL.Data.Models.TicketOrder
+@{
+    ViewData["Title"] = "Booking Confirmation";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link href="~/css/booking-confirmation.css" rel="stylesheet" />
+
+<div class="container-fluid booking-confirmation-container">
+    <div class="confirmation-content">
+        <!-- Success Header -->
+        <div class="success-header text-center">
+            <div class="success-icon">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <h1 class="success-title">Booking Confirmed!</h1>
+            <p class="success-subtitle">Your tickets have been successfully booked</p>
+        </div>
+
+        <!-- Booking Details Card -->
+        <div class="booking-details-card">
+            <div class="card-header">
+                <h3><i class="fas fa-ticket-alt me-2"></i>Booking Details</h3>
+                <span class="order-id">Order #@Model.Order_Id</span>
+            </div>
+            
+            <div class="card-body">
+                <div class="row">
+                    <!-- Movie Information -->
+                    <div class="col-md-4">
+                        <div class="movie-info">
+                            @{
+                                var firstTicket = Model.Tickets.FirstOrDefault();
+                                var movie = firstTicket?.timing?.Showtime?.Movie;
+                                var cinema = firstTicket?.timing?.Showtime?.Cinema;
+                                var showDate = firstTicket?.timing?.Showtime?.Date;
+                                var showTime = firstTicket?.timing?.StartTime;
+                            }
+                            
+                            @if (movie != null)
+                            {
+                                <img src="@movie.ImageURL" alt="@movie.Name" class="movie-poster" 
+                                     onerror="this.src='https://via.placeholder.com/200x300/e50914/ffffff?text=Movie'">
+                                <h4 class="movie-title">@movie.Name</h4>
+                                <p class="movie-category">@movie.MovieCategory</p>
+                            }
+                        </div>
+                    </div>
+                    
+                    <!-- Show Information -->
+                    <div class="col-md-4">
+                        <div class="show-info">
+                            <h5><i class="fas fa-info-circle me-2"></i>Show Information</h5>
+                            <div class="info-item">
+                                <i class="fas fa-theater-masks"></i>
+                                <span>@cinema?.Name</span>
+                            </div>
+                            <div class="info-item">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>@cinema?.Address</span>
+                            </div>
+                            <div class="info-item">
+                                <i class="fas fa-calendar"></i>
+                                <span>@showDate?.ToString("dddd, MMMM dd, yyyy")</span>
+                            </div>
+                            <div class="info-item">
+                                <i class="fas fa-clock"></i>
+                                <span>@showTime?.ToString(@"hh\:mm")</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Booking Summary -->
+                    <div class="col-md-4">
+                        <div class="booking-summary">
+                            <h5><i class="fas fa-receipt me-2"></i>Booking Summary</h5>
+                            <div class="summary-item">
+                                <span>Booking Date:</span>
+                                <span>@Model.BookingTime.ToString("MMM dd, yyyy HH:mm")</span>
+                            </div>
+                            <div class="summary-item">
+                                <span>Number of Tickets:</span>
+                                <span>@Model.Amount</span>
+                            </div>
+                            <div class="summary-item">
+                                <span>Payment Status:</span>
+                                <span class="status-badge status-@Model.PaymentStatus.ToLower()">@Model.PaymentStatus</span>
+                            </div>
+                            <div class="summary-item total">
+                                <span>Total Amount:</span>
+                                <span class="total-price">$@Model.TotalPrice.ToString("F2")</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Seat Details -->
+        <div class="seat-details-card">
+            <div class="card-header">
+                <h3><i class="fas fa-chair me-2"></i>Your Seats</h3>
+            </div>
+            <div class="card-body">
+                <div class="seats-grid">
+                    @foreach (var ticket in Model.Tickets.OrderBy(t => t.RowNumber).ThenBy(t => t.SeatNumber))
+                    {
+                        <div class="seat-ticket">
+                            <div class="seat-visual @(ticket.SeatType == DAL.Data.Models.SeatType.Premium ? "premium" : "regular")">
+                                <i class="fas fa-chair"></i>
+                            </div>
+                            <div class="seat-info">
+                                <div class="seat-position">@GetRowLabel(ticket.RowNumber)@ticket.SeatNumber</div>
+                                <div class="seat-type">@ticket.SeatType</div>
+                                <div class="seat-price">$@(ticket.SeatType == DAL.Data.Models.SeatType.Premium ? (firstTicket.timing.Price * 1.5m).ToString("F2") : firstTicket.timing.Price.ToString("F2"))</div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <!-- QR Code Section -->
+        <div class="qr-code-section text-center">
+            <h4><i class="fas fa-qrcode me-2"></i>Your Digital Ticket</h4>
+            <div class="qr-code-container">
+                <div class="qr-code-placeholder">
+                    <i class="fas fa-qrcode"></i>
+                    <p>QR Code</p>
+                    <small>Order #@Model.Order_Id</small>
+                </div>
+            </div>
+            <p class="qr-instructions">Show this QR code at the cinema entrance</p>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="action-buttons text-center">
+            <button class="btn btn-primary" onclick="window.print()">
+                <i class="fas fa-print me-2"></i>Print Tickets
+            </button>
+            <a href="@Url.Action("MyBookings", "Ticket")" class="btn btn-secondary">
+                <i class="fas fa-history me-2"></i>View All Bookings
+            </a>
+            <a href="@Url.Action("Index", "Movie")" class="btn btn-success">
+                <i class="fas fa-film me-2"></i>Book More Movies
+            </a>
+        </div>
+
+        <!-- Important Notes -->
+        <div class="important-notes">
+            <h5><i class="fas fa-exclamation-triangle me-2"></i>Important Notes</h5>
+            <ul>
+                <li>Please arrive at the cinema at least 15 minutes before the show time</li>
+                <li>Carry a valid ID proof for verification</li>
+                <li>Outside food and beverages are not allowed</li>
+                <li>Tickets are non-refundable and non-transferable</li>
+                <li>Show this confirmation or QR code at the entrance</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            // Add print styles when printing
+            window.addEventListener('beforeprint', function() {
+                document.body.classList.add('printing');
+            });
+            
+            window.addEventListener('afterprint', function() {
+                document.body.classList.remove('printing');
+            });
+
+            // Auto-hide any alerts
+            setTimeout(function() {
+                $('.alert').fadeOut('slow');
+            }, 5000);
+
+            // Add animation to success icon
+            $('.success-icon i').addClass('animated-check');
+        });
+    </script>
+}
+
+@functions {
+    string GetRowLabel(int rowNumber)
+    {
+        return ((char)(64 + rowNumber)).ToString(); // A, B, C, etc.
+    }
+}
+

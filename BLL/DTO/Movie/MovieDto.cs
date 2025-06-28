@@ -26,7 +26,5 @@ namespace BLL.DTO.Movie
         public string TrailerURL { get; set; }
         [Required]
         public Category MovieCategory { get; set; }
-      
-       
     }
 }

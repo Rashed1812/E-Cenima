@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using DAL.Data.Models.Movie_Module;
+using Microsoft.AspNetCore.Http;
 
 namespace BLL.DTO.Movie
 {
@@ -17,7 +18,7 @@ namespace BLL.DTO.Movie
         [Required]
         public string Description { get; set; }
         [Required]
-        public string ImageURL { get; set; }
+        public IFormFile ImageURL { get; set; }
         [DataType(DataType.Date)]
         [Required]
         public DateTime ReleaseDate { get; set; }

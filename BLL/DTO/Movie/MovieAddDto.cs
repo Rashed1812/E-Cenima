@@ -21,5 +21,6 @@ namespace BLL.DTO.Movie
         public DateTime ReleaseDate { get; set; }
         public string TrailerURL { get; set; }
         public Category MovieCategory { get; set; }
+        public List<Actor> Actors { get; set; }
     }
 }

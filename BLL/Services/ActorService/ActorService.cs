@@ -16,7 +16,7 @@ namespace BLL.Services.ActorService
     public class ActorService(IActorRepo _actorRepo ,IFileService _fileService) : IActorService
     {
 
-        public async Task<ICollection<ActorDto>> GetAllAsync()
+        public async Task<IEnumerable<ActorDto>> GetAllAsync()
         {
             var actors = await _actorRepo.GetAllAsync();
             return actors.Select(a => a.ToActorDTO()).ToList();
