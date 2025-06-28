@@ -314,65 +314,84 @@
     }
 
     }
+   
 </style>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function () {
         const seats = document.querySelectorAll('.compact-seat.available');
         const selectedCount = document.getElementById('selected-seats-count');
         const totalPrice = document.getElementById('total-price');
         const confirmBtn = document.getElementById('confirm-selection');
         const pricePerSeat = @Model.Price;
-        const premiumMultiplier = 1.5; // Premium seats cost 50% more
+        const TimeID = @Model.Id;
+        const premiumMultiplier = 1.5;
 
         let selectedSeats = [];
 
         seats.forEach(seat => {
-            seat.addEventListener('click', function() {
+            seat.addEventListener('click', function () {
                 const row = this.getAttribute('data-row');
                 const seatNum = this.getAttribute('data-seat');
                 const isPremium = this.classList.contains('premium');
                 const seatId = `R${row}S${seatNum}`;
 
                 if (this.classList.contains('selected')) {
-                    // Deselect seat
                     this.classList.remove('selected');
                     selectedSeats = selectedSeats.filter(s => s.id !== seatId);
                 } else {
-                    // Select seat
                     this.classList.add('selected');
                     selectedSeats.push({
                         id: seatId,
+                        row: parseInt(row),
+                        seat: parseInt(seatNum),
                         isPremium: isPremium,
                         price: isPremium ? pricePerSeat * premiumMultiplier : pricePerSeat
                     });
                 }
 
-                // Update UI
                 updateSelectionSummary();
             });
         });
 
         function updateSelectionSummary() {
             selectedCount.textContent = selectedSeats.length;
-
             const total = selectedSeats.reduce((sum, seat) => sum + seat.price, 0);
             totalPrice.textContent = total.toFixed(2);
-
             confirmBtn.disabled = selectedSeats.length === 0;
         }
 
-        confirmBtn.addEventListener('click', function() {
+           confirmBtn.addEventListener('click', async function () {
+        try {
             const timingId = document.querySelector('.compact-seat').getAttribute('data-timing-id');
-            const seatList = selectedSeats.map(s => `${s.id} (${s.isPremium ? 'Premium' : 'Regular'})`).join(', ');
-            const total = selectedSeats.reduce((sum, seat) => sum + seat.price, 0);
 
-            alert(`Confirm booking for:\n\nTiming: ${timingId}\nSeats: ${seatList}\nTotal: $${total.toFixed(2)}`);
 
-            // Reset selection
-            document.querySelectorAll('.compact-seat.selected').forEach(s => s.classList.remove('selected'));
-            selectedSeats = [];
-            updateSelectionSummary();
-        });
+            const seatData = selectedSeats.map(s => ({
+                timingId: parseInt(timingId),
+                row: s.row,
+                seat: s.seat
+            }));
+
+            const response = await fetch('/Ticket/BookSeats?Id='+TimeID, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(seatData)
+            });
+
+            const result = await response.json();
+
+            if (response.ok && result.success) {
+                alert("Seats successfully booked!");
+                location.reload();
+            } else {
+                alert(result.message || "Booking failed.");
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert("An error occurred while booking seats.");
+        }
+    });
     });
 </script>

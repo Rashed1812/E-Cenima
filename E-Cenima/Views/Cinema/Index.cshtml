@@ -23,7 +23,7 @@
                     <div class="featured-media">
                         @if (!string.IsNullOrEmpty(bestCinema.Logo))
                         {
-                            <img src="/@bestCinema.Logo" alt="@bestCinema.Name logo" class="featured-logo">
+                            <img src="@bestCinema.Logo" alt="@bestCinema.Name logo" class="featured-logo">
                         }
                         <div class="premium-badge">Premium</div>
                     </div>
@@ -49,7 +49,7 @@
                                         <div class="movie-poster">
                                             @if (!string.IsNullOrEmpty(showtime.Movie?.ImageURL))
                                             {
-                                                <img src="/@showtime.Movie.ImageURL" alt="@showtime.Movie.Name">
+                                                <img src="@showtime.Movie.ImageURL" alt="@showtime.Movie.Name">
                                             }
                                             <div class="movie-info">
                                                 <span class="movie-title">@showtime.Movie?.Name</span>
@@ -80,7 +80,7 @@
                     <div class="poster">
                         @if (!string.IsNullOrEmpty(cinema.Logo))
                         {
-                            <img src="/@cinema.Logo" alt="@cinema.Name logo" class="poster-image">
+                            <img src="@cinema.Logo" alt="@cinema.Name logo" class="poster-image">
                         }
                         else
                         {

@@ -10,7 +10,7 @@
         <div class="movie-details-container">
             <!-- Movie Poster (now properly sized) -->
             <div class="movie-poster-container">
-                <img src="/@Model.ImageURL" alt="@Model.Name" class="movie-poster">
+                <img src="@Model.ImageURL" alt="@Model.Name" class="movie-poster">
                 <a asp-action="MoviesWithTime" asp-controller="Movie" asp-route-Id="@Model.Id"> <button class="book-now-button">Book Now</button></a>
             </div>
 

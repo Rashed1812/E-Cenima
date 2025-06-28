@@ -1,0 +1,72 @@
+﻿@model E_Cenima.Models.User.RegisterViewModel
+
+@{
+    ViewData["Title"] = "RegisterUser";
+}
+<link href="~/css/Register.css" rel="stylesheet" />
+<div class="auth-container">
+    <div class="auth-wrapper">
+        <div class="auth-card">
+            <div class="auth-header">
+                <h1>Create Account</h1>
+                <p>Join our community today</p>
+            </div>
+
+            <form asp-action="RegisterUser" class="auth-form">
+                <div asp-validation-summary="ModelOnly" class="form-errors"></div>
+
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label asp-for="FirstName" class="form-label"></label>
+                        <input asp-for="FirstName" class="form-input" />
+                        <span asp-validation-for="FirstName" class="form-error"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="LastName" class="form-label"></label>
+                        <input asp-for="LastName" class="form-input" />
+                        <span asp-validation-for="LastName" class="form-error"></span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="UserName" class="form-label"></label>
+                    <input asp-for="UserName" class="form-input" />
+                    <span asp-validation-for="UserName" class="form-error"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Email" class="form-label"></label>
+                    <input asp-for="Email" class="form-input" />
+                    <span asp-validation-for="Email" class="form-error"></span>
+                </div>
+
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label asp-for="Password" class="form-label"></label>
+                        <input asp-for="Password" type="password" class="form-input" />
+                        <span asp-validation-for="Password" class="form-error"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="ConfirmPassword" class="form-label"></label>
+                        <input asp-for="ConfirmPassword" type="password" class="form-input" />
+                        <span asp-validation-for="ConfirmPassword" class="form-error"></span>
+                    </div>
+                </div>
+
+                <button type="submit" class="auth-button">Register Now</button>
+            </form>
+
+            <div class="auth-footer">
+                <p>Already have an account? <a asp-action="Login" class="auth-link">Sign In</a></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
