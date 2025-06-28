@@ -1,0 +1,160 @@
+﻿
+/* General Body/Container Styles */
+.admin-actors-container {
+    background-color: var(--dark-bg);
+    min-height: 100vh;
+    color: var(--text-primary); /* Default text color for the container */
+}
+
+/* Header Styles */
+.admin-header h1 {
+    color: var(--primary-color); /* Netflix red for the main title */
+}
+
+.btn-add-actor {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 4px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    transition: all 0.3s ease;
+    text-decoration: none;
+}
+
+    .btn-add-actor:hover {
+        background-color: #c40812; /* Slightly darker red on hover */
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+/* Card containing the table */
+.actor-table-card {
+    background-color: var(--card-bg);
+    border: 1px solid var(--secondary-color); /* Subtle border for the card */
+    border-radius: 8px;
+    overflow: hidden; /* Ensures rounded corners apply to table inside */
+}
+
+/* Table Styles */
+.actor-list-table {
+    color: var(--text-primary); /* Default text color for table content */
+    width: 100%; /* Ensure table takes full width */
+    border-collapse: collapse; /* Remove space between borders */
+}
+
+    .actor-list-table thead {
+        background-color: var(--secondary-color); /* Header background */
+    }
+
+    .actor-list-table th {
+        color: var(--text-primary); /* Header text color */
+        padding: 1rem;
+        text-align: left;
+        border-bottom: 1px solid var(--secondary-color); /* Separator for header */
+    }
+
+    .actor-list-table td {
+        padding: 1rem;
+        vertical-align: middle;
+        border-bottom: 1px solid var(--secondary-color); /* Row separator */
+    }
+
+    .actor-list-table tbody tr:last-child td {
+        border-bottom: none; /* No border for the last row */
+    }
+
+    .actor-list-table tbody tr:hover {
+        background-color: rgba(229, 9, 20, 0.1); /* Light red background on hover */
+        color: var(--primary-color) !important; /* Primary color text on hover */
+    }
+
+/* Profile Picture */
+.actor-profile-img {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border: 2px solid var(--primary-color); /* Red border for profile pics */
+}
+
+.actor-profile-placeholder {
+    width: 60px;
+    height: 60px;
+    background-color: var(--secondary-color);
+    color: var(--accent-color);
+    font-size: 1.5rem;
+    border: 2px solid var(--secondary-color); /* Consistent border */
+}
+
+/* Biography cell truncation */
+.actor-bio-cell {
+    max-width: 400px; /* Limit width */
+    white-space: nowrap; /* Prevent text wrapping */
+    overflow: hidden; /* Hide overflow */
+    text-overflow: ellipsis; /* Show ellipsis for truncated text */
+    color: var(--text-secondary); /* Secondary text color for bio */
+}
+
+/* Action Buttons (Edit/Delete) */
+.action-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%; /* Circular buttons */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    font-size: 0.9rem;
+    text-decoration: none; /* Remove underline from links */
+}
+
+.edit-btn {
+    background-color: transparent;
+    border: 1px solid var(--text-secondary); /* Subtle border */
+    color: var(--text-secondary);
+}
+
+    .edit-btn:hover {
+        background-color: #17a2b8; /* Bootstrap info color for edit */
+        border-color: #17a2b8;
+        color: white;
+        transform: scale(1.1);
+    }
+
+.delete-btn {
+    background-color: transparent;
+    border: 1px solid var(--primary-color); /* Red border for delete */
+    color: var(--primary-color);
+}
+
+    .delete-btn:hover {
+        background-color: var(--primary-color); /* Solid red on hover */
+        border-color: var(--primary-color);
+        color: white;
+        transform: scale(1.1);
+    }
+
+/* Responsive adjustments */
+@@media (max-width: 768px) {
+    .admin-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+
+    .btn-add-actor {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .actor-list-table th, .actor-list-table td {
+        padding: 0.75rem;
+    }
+
+    .actor-bio-cell {
+        max-width: 150px; /* Adjust for smaller screens */
+    }
+}
+

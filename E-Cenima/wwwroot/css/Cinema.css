@@ -285,7 +285,6 @@
 }
 
 .btn-outline-secondary {
-    color: var(--text-primary);
     border-color: var(--border-color);
 }
 

@@ -5,105 +5,141 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace E_Cenima.Controllers
 {
-    public class AccountController(UserManager<ApplicationUser> _userManager ,SignInManager<ApplicationUser> _signInManager, RoleManager<IdentityRole> roleManager) : Controller
+    public class AccountController(
+        UserManager<ApplicationUser> _userManager,
+        SignInManager<ApplicationUser> _signInManager,
+        RoleManager<IdentityRole> _roleManager) : Controller
     {
         private readonly UserManager<ApplicationUser> userManager = _userManager;
         private readonly SignInManager<ApplicationUser> signInManager = _signInManager;
-        private readonly RoleManager<IdentityRole> roleManager = roleManager;
+        private readonly RoleManager<IdentityRole> roleManager = _roleManager;
 
+        // === USER REGISTER ===
         [HttpGet]
-        public IActionResult Register() => View();
+        public IActionResult RegisterUser() => View("RegisterUser");
+
         [HttpPost]
-        public IActionResult Register(RegisterViewModel registerViewModel)
+        public IActionResult RegisterUser(RegisterViewModel model)
         {
-            if (!ModelState.IsValid)
-                return View(registerViewModel);
+            if (!ModelState.IsValid) return View(model);
 
             var user = new ApplicationUser
             {
-                FullName = registerViewModel.FirstName + " " + registerViewModel.LastName,
-                UserName = registerViewModel.UserName,
-                Email = registerViewModel.Email,
+                FullName = $"{model.FirstName} {model.LastName}",
+                UserName = model.UserName,
+                Email = model.Email,
             };
 
-            var result = userManager.CreateAsync(user, registerViewModel.Password).Result;
-
-            if (result.Succeeded)
-            {
-                //  Ensure role
-                var roleName = UserRole.User;
-
-                if (!roleManager.RoleExistsAsync(roleName).Result)
-                {
-                    var roleResult = roleManager.CreateAsync(new IdentityRole(roleName)).Result;
-
-                    if (!roleResult.Succeeded)
-                    {
-                        ModelState.AddModelError("", "Failed to create role.");
-                        return View(registerViewModel);
-                    }
-                }
-
-                var addToRoleResult = userManager.AddToRoleAsync(user, roleName).Result;
-
-                if (!addToRoleResult.Succeeded)
-                {
-                    foreach (var error in addToRoleResult.Errors)
-                    {
-                        ModelState.AddModelError(string.Empty, error.Description);
-                    }
-                    return View(registerViewModel);
-                }
-
-                return RedirectToAction("Login");
-            }
-            else
+            var result = userManager.CreateAsync(user, model.Password).Result;
+            if (!result.Succeeded)
             {
                 foreach (var error in result.Errors)
-                {
-                    ModelState.AddModelError(string.Empty, error.Description);
-                }
-                return View(registerViewModel);
+                    ModelState.AddModelError("", error.Description);
+                return View(model);
             }
+
+            // Ensure 'User' role exists
+            if (!roleManager.RoleExistsAsync(UserRole.User).Result)
+            {
+                var roleResult = roleManager.CreateAsync(new IdentityRole(UserRole.User)).Result;
+                if (!roleResult.Succeeded)
+                {
+                    ModelState.AddModelError("", "Could not create User role.");
+                    return View(model);
+                }
+            }
+
+            userManager.AddToRoleAsync(user, UserRole.User).Wait();
+
+            return RedirectToAction(nameof(Login));
         }
 
         [HttpGet]
-        public IActionResult Login() => View();
+        public IActionResult RegisterAdmin() => View();
+
         [HttpPost]
-        public async Task<IActionResult> Login(LoginViewModel loginViewModel)
+        public IActionResult RegisterAdmin(RegisterViewModel model)
         {
-            if (!ModelState.IsValid) return View(loginViewModel);
+            if (!ModelState.IsValid) return View(model);
 
-
-            var user = await userManager.FindByEmailAsync(loginViewModel.Email);
-            if (user is not null)
+            var user = new ApplicationUser
             {
-                var flag = await userManager.CheckPasswordAsync(user, loginViewModel.Password);
-                if (flag)
-                {
-                    var result = await signInManager.PasswordSignInAsync(user, loginViewModel.Password, loginViewModel.RememberMe, false);
-                    if (result.Succeeded)
-                        return RedirectToAction("Index", "Home");
-                }
-                else
-                    ModelState.AddModelError(string.Empty, "Invalid Password");
+                FullName = $"{model.FirstName} {model.LastName}",
+                UserName = model.UserName,
+                Email = model.Email,
+            };
+
+            var result = userManager.CreateAsync(user, model.Password).Result;
+            if (!result.Succeeded)
+            {
+                foreach (var error in result.Errors)
+                    ModelState.AddModelError("", error.Description);
+                return View(model);
             }
-            else
-                ModelState.AddModelError(string.Empty, "Invalid login attempt.");
-            return View(loginViewModel);
+
+            // Ensure 'Admin' role exists
+            if (!roleManager.RoleExistsAsync(UserRole.Admin).Result)
+            {
+                var roleResult = roleManager.CreateAsync(new IdentityRole(UserRole.Admin)).Result;
+                if (!roleResult.Succeeded)
+                {
+                    ModelState.AddModelError("", "Could not create Admin role.");
+                    return View(model);
+                }
+            }
+
+            userManager.AddToRoleAsync(user, UserRole.Admin).Wait();
+
+            return RedirectToAction(nameof(Login));
         }
-        public new  async Task<IActionResult> Logout()
+
+     
+        [HttpGet]
+        public IActionResult Login() => View();
+
+        [HttpPost]
+        public async Task<IActionResult> Login(LoginViewModel model)
+        {
+            if (!ModelState.IsValid) return View(model);
+
+            var user = await userManager.FindByEmailAsync(model.Email);
+            if (user == null)
+            {
+                ModelState.AddModelError("", "User not found.");
+                return View(model);
+            }
+
+            var passwordValid = await userManager.CheckPasswordAsync(user, model.Password);
+            if (!passwordValid)
+            {
+                ModelState.AddModelError("", "Invalid password.");
+                return View(model);
+            }
+
+            var result = await signInManager.PasswordSignInAsync(user, model.Password, model.RememberMe, false);
+            if (!result.Succeeded)
+            {
+                ModelState.AddModelError("", "Login failed.");
+                return View(model);
+            }
+
+            var roles = await userManager.GetRolesAsync(user);
+
+         
+            if (roles.Contains(UserRole.Admin))
+                return RedirectToAction("AdminIndex", "Movie");
+
+            return RedirectToAction("Index", "Home");
+        }
+
+      
+        public async Task<IActionResult> Logout()
         {
             await signInManager.SignOutAsync();
             return RedirectToAction(nameof(Login));
         }
-        public IActionResult ResetPassword()
-        {
-            return View();
-        }
-        public IActionResult ForgetPassword()
-        {
-            return View();
-        }
+
+        public IActionResult ForgetPassword() => View();
+        public IActionResult ResetPassword() => View();
     }
 }

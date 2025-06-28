@@ -8,7 +8,7 @@
 
     <div class="actor-profile">
         <div class="actor-image-container">
-            <img src="/@Model.Actor.ProfilePictureURL" alt="@Model.Actor.FullName" class="actor-image">
+            <img src="@Model.Actor.ProfilePictureURL" alt="@Model.Actor.FullName" class="actor-image">
         </div>
 
         <div class="actor-info">
@@ -23,7 +23,7 @@
         @foreach (var movie in Model.Movies)
         {
             <div class="movie-card">
-                <img src="/@movie.ImageURL" alt="@movie.Name" class="movie-poster">
+                <img src="@movie.ImageURL" alt="@movie.Name" class="movie-poster">
                 <div class="movie-details">
                     <h3 class="movie-title">@movie.Name</h3>
                     <div class="movie-meta">

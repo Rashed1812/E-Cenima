@@ -36,9 +36,11 @@ namespace E_Cenima
             builder.Services.AddScoped<ITimeRepo, TimeRepo>();
             builder.Services.AddScoped<ITimeService, TimeService>();
             builder.Services.AddScoped<IFileService, FileService>();
-            builder.Services.AddIdentity<IdentityUser, IdentityRole>()
+
+            builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<AppDbContext>()
                 .AddDefaultTokenProviders();
+
 
             var app = builder.Build();
 
@@ -55,7 +57,7 @@ namespace E_Cenima
 
             app.MapControllerRoute(
                 name: "default",
-                pattern: "{controller=Home}/{action=Index}/{id?}");
+                pattern: "{controller=Account}/{action=Login}");
 
             app.Run();
         }
